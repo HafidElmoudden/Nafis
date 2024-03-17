@@ -8,31 +8,32 @@ function Authentification() {
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight text-center">
-           تسجيل الدخول
+            تسجيل الدخول
           </h1>
           <p className="text-sm text-muted-foreground">
-            
+
           </p>
         </div>
         <UserAuthForm />
         <p className="px-8 text-center text-sm text-muted-foreground">
-          By clicking continue, you agree to our{" "}
+          بالنقر فوق الاستمرار، أنت توافق على {" "}
           <Link
             to="/"
             className="underline underline-offset-4 hover:text-primary"
           >
-            Terms of Service
+            شروط الخدمة
           </Link>
           {" "}
-          and{" "}
+          و {" "}
           <Link
             to="/"
             className="underline underline-offset-4 hover:text-primary"
           >
-            Privacy Policy
+            سياسة الخصوصية
           </Link>
           .
         </p>
+
       </div>
     </div>
   );

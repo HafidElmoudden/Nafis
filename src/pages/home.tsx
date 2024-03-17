@@ -1,5 +1,8 @@
 import React from 'react';
-import Freshers from "assets/freshers.jpg";
+// import Freshers from "assets/freshers.jpg";
+
+const Freshers = require("assets/freshers.jpg");
+
 function Home() {
   return (
     <div className='relative w-full h-full flex justify-center items-center'>
