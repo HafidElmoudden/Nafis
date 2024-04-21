@@ -21,7 +21,7 @@ export const TabsList = ({ children }) => {
 
 export const TabContent = ({ value, children }) => {
     return (
-        <div className="py-2">
+        <div className="py-4">
             {children}
         </div>
     )

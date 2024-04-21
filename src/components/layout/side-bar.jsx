@@ -44,7 +44,7 @@ const SideBarElement = ({ title, icon, active, onClick }) => {
 function SideBar() {
     const navigate = useNavigate();
     return (
-        <section className='flex flex-col py-4 justify-between h-[calc(100%-70px)] w-[200px] border border-y-0 fixed right-0'>
+        <section className='flex flex-col py-4 justify-between  h-[calc(100%-70px)] w-[200px] border border-y-0 fixed top-16 right-0'>
             <div className='flex flex-col items-center gap-2'>
                 <SideBarElement onClick={() => navigate("/home")} title='الرئيسية' icon={faHouse} />
                 <SideBarElement onClick={() => navigate("/tests")} title='الاختبارات' icon={faFileCircleQuestion} />

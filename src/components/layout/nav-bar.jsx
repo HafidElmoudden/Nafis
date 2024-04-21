@@ -6,13 +6,13 @@ import AvatarImage from 'assets/default_avatar.png'
 
 function NavBar() {
   return (
-    <nav className="w-screen p-[10px] h-16 bg-white shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-10 p-[10px] h-16 bg-white shadow-sm">
       <div className='h-full w-full flex justify-between items-center flex-row-reverse'>
         <div className='h-auto w-16 flex  items-center justify-center object-cover'>
           <Logo />
         </div>
 
-        <div className='flex  items-center justify-center w-auto h-full'>
+        <div className='flex items-center justify-center w-auto h-full'>
           <div className='flex flex-col items-center justify-center w-24 h-full border rounded-r-none rounded-3xl'>
             <span className='text-center text-neutral-600 text-[12px] font-semibold'>درجة مهاراتي</span>
             <span className='text-gray-400 text-[12px] font-medium'>100/100</span>
@@ -32,7 +32,7 @@ function NavBar() {
             <img src={AvatarImage} alt="user" className='w-9 h-9 rounded-full' />
           </div>
         </div>
-        
+
       </div>
     </nav>
   )

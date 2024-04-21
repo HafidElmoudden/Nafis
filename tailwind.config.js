@@ -24,12 +24,13 @@ module.exports = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          // DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "rgb(37 99 235 / var(--tw-bg-opacity))",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "rgb(219 234 254 / var(--tw-bg-opacity))",
+          foreground: "rgb(239 246 255 / var(--tw-bg-opacity))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -51,6 +52,10 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        primeblue: {
+          DEFAULT: "rgb(37 99 235 / var(--tw-bg-opacity))",
+          foreground: "rgb(219 234 254 / var(--tw-bg-opacity))",
+        }
       },
       borderRadius: {
         lg: "var(--radius)",

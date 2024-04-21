@@ -1,0 +1,36 @@
+import { Button } from '@/components/ui/button'
+import Divider from 'components/divider';
+import React from 'react'
+import InputSection from './input-section';
+import { Code, KeyRound, Mail, Phone, UserIcon } from 'lucide-react';
+
+function GeneralSettings() {
+    return (
+        <section className='overflow-y-visible max-h-full'>
+            <div className="flex flex-row-reverse  justify-between items-center">
+                <div>
+                    <h1 className='text-lg font-semibold'>اعدادات عامة</h1>
+                    <span className='text-sm text-muted-foreground'>.في هذا القسم يمكنك تعديل المعلومات العامة الخاصة بالحساب</span>
+                </div>
+                <div className='space-x-4'>
+                    <Button variant="secondary">حذف التغييرات</Button>
+                    <Button>حفظ</Button>
+                </div>
+            </div>
+            <Divider/>
+            <div className='flex flex-col'>
+                <InputSection label='الاسم الكامل' type='text' id='full_name' icon={<UserIcon size={20} className='text-center'/>}/>
+                <Divider/>
+                <InputSection label='البريد الالكتروني' type='email' id='email' icon={<Mail size={20} className='text-center'/>}/>
+                <Divider/>
+                <InputSection label='رقم الهاتف' type='tel' id='phone' icon={<Phone size={20} className='text-center'/>}/>
+                <Divider/>
+                <InputSection label='كلمة المرور' type='password' id='password' icon={<KeyRound size={20} className='text-center'/>}/>
+                <Divider/>
+                <InputSection label='تأكيد كلمة المرور' type='password' id='confirm_password' icon={<KeyRound size={20} className='text-center'/>}/>
+            </div>  
+        </section>
+    )
+}
+
+export default GeneralSettings;
