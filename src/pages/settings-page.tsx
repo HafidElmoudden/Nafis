@@ -1,7 +1,7 @@
 import ClassSettings from 'components/settings/class-settings'
 import GeneralSettings from 'components/settings/general-settings'
 import SchoolSettings from 'components/settings/school-settings'
-import StudentSetting from 'components/settings/student-settings'
+import StudentSettings from 'components/settings/student-settings'
 import TeacherSettings from 'components/settings/teacher-settings'
 import { Tab, TabContent, Tabs, TabsList } from 'components/tabs'
 import React from 'react'
@@ -31,7 +31,7 @@ function SettingsPage() {
               <TeacherSettings/>  
             </TabContent>
             <TabContent value="studentsettings">
-              <StudentSetting/>
+              <StudentSettings/>
             </TabContent>
             <TabContent value="classsettings">
               <ClassSettings/>

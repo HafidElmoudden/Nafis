@@ -3,32 +3,45 @@ import Divider from 'components/divider';
 import React from 'react'
 import InputSection from './input-section';
 import { Code, KeyRound, Mail, Phone, UserIcon } from 'lucide-react';
+import { useForm } from 'react-hook-form';
 
 function GeneralSettings() {
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState,
+    } = useForm()
+
+    const onSubmit = (data) => console.log(data)
+
     return (
         <section className='overflow-y-visible max-h-full'>
-            <div className="flex flex-row-reverse  justify-between items-center">
-                <div>
-                    <h1 className='text-lg font-semibold'>اعدادات عامة</h1>
-                    <span className='text-sm text-muted-foreground'>.في هذا القسم يمكنك تعديل المعلومات العامة الخاصة بالحساب</span>
+            <form onSubmit={handleSubmit(onSubmit)}>
+
+                <div className="flex flex-row-reverse  justify-between items-center">
+                    <div>
+                        <h1 className='text-lg font-semibold'>اعدادات عامة</h1>
+                        <span className='text-sm text-muted-foreground'>.في هذا القسم يمكنك تعديل المعلومات العامة الخاصة بالحساب</span>
+                    </div>
+                    <div className='space-x-4'>
+                        <Button variant="secondary">حذف التغييرات</Button>
+                        <Button>حفظ</Button>
+                    </div>
                 </div>
-                <div className='space-x-4'>
-                    <Button variant="secondary">حذف التغييرات</Button>
-                    <Button>حفظ</Button>
+                <Divider />
+                <div className='flex flex-col w-full items-end'>
+                    <InputSection label='الاسم الكامل' type='text' id='full_name' icon={<UserIcon size={20} className='text-center' />} register={register} />
+                    <Divider />
+                    <InputSection label='البريد الالكتروني' type='email' id='email' icon={<Mail size={20} className='text-center' />} register={register} />
+                    <Divider />
+                    <InputSection label='رقم الهاتف' type='tel' id='phone' icon={<Phone size={20} className='text-center' />} register={register} />
+                    <Divider />
+                    <InputSection label='كلمة المرور' type='password' id='password' icon={<KeyRound size={20} className='text-center' />} register={register} />
+                    <Divider />
+                    <InputSection label='تأكيد كلمة المرور' type='password' id='confirm_password' icon={<KeyRound size={20} className='text-center' />} register={register} />
                 </div>
-            </div>
-            <Divider/>
-            <div className='flex flex-col'>
-                <InputSection label='الاسم الكامل' type='text' id='full_name' icon={<UserIcon size={20} className='text-center'/>}/>
-                <Divider/>
-                <InputSection label='البريد الالكتروني' type='email' id='email' icon={<Mail size={20} className='text-center'/>}/>
-                <Divider/>
-                <InputSection label='رقم الهاتف' type='tel' id='phone' icon={<Phone size={20} className='text-center'/>}/>
-                <Divider/>
-                <InputSection label='كلمة المرور' type='password' id='password' icon={<KeyRound size={20} className='text-center'/>}/>
-                <Divider/>
-                <InputSection label='تأكيد كلمة المرور' type='password' id='confirm_password' icon={<KeyRound size={20} className='text-center'/>}/>
-            </div>  
+            </form>
         </section>
     )
 }
