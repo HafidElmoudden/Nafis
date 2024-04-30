@@ -20,6 +20,11 @@ export function Combobox({ options, buttonStyle, popoverStyle, commandStyle }) {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("")
 
+    if (!options) {
+        console.err("ComboBox Component: No options provided")
+        return null
+    }
+
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -27,7 +32,7 @@ export function Combobox({ options, buttonStyle, popoverStyle, commandStyle }) {
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className={cn(buttonStyle, "justify-between")}
+                    className={cn(buttonStyle, "justify-end")}
                 >
                     {value
                         ? options.find((option) => option.value === value)?.label
@@ -37,7 +42,7 @@ export function Combobox({ options, buttonStyle, popoverStyle, commandStyle }) {
             </PopoverTrigger>
             <PopoverContent className={cn(popoverStyle, "p-0")}>
                 <Command className={commandStyle}>
-                    <CommandInput placeholder="...البحت" />
+                    <CommandInput placeholder="...البحت" className="text-right"/>
                     <CommandEmpty>.لا توجد خيارات متوفر</CommandEmpty>
                     <CommandGroup>
                         {options.map((option) => (

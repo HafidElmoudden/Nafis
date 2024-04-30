@@ -30,6 +30,8 @@ function SchoolSettings() {
                 </div>
                 <Divider />
                 <div className='flex flex-col w-full items-end'>
+                    <InputSection label='الرقم الوزاري' type='text' id='ministral_id' register={register}/>
+                    <Divider />
                     <InputSection label='اسم المدرسة' type='text' id='school_name' register={register}/>
                     <Divider />
                     <InputSection label='الادارة التعليمية' type='text' id='educational_administration' register={register}/>

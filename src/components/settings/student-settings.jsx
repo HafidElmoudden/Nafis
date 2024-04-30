@@ -3,6 +3,9 @@ import React from 'react'
 import InputSection from './input-section'
 import Divider from 'components/divider'
 import { useForm } from 'react-hook-form'
+import DropdownSection from 'components/dropdown'
+import { School } from 'lucide-react'
+import FileChooserSection from 'components/fileupload-section'
 
 function StudentSettings() {
     const {
@@ -30,22 +33,9 @@ function StudentSettings() {
                 </div>
                 <Divider />
                 <div className='flex flex-col w-full items-end'>
-                    <InputSection label='اسم المدرسة' type='text' id='school_name' register={register}/>
+                    <DropdownSection label='الصف' id='class' register={register} icon={<School size={20} className='text-center' />}/>
                     <Divider />
-                    <InputSection label='الادارة التعليمية' type='text' id='educational_administration' register={register}/>
-                    <Divider />
-                    <InputSection label='مكتب التعليم' type='text' id='educational_office' register={register}/>
-                    <Divider />
-                    <InputSection label='مدير المدرسة' type='text' id='school_principal' register={register}/>
-                    <Divider />
-                    <InputSection label='مسؤول نافس' type='text' id='nafis_coordinator' register={register}/>
-                    <Divider />
-                    <InputSection label='السنة الدراسية' type='text' id='academic_year' register={register}/>
-                    <Divider />
-                    <InputSection label='الفصل الدراسي' type='text' id='semester' register={register}/>
-                    <Divider />
-                    <InputSection label='درجة نافس السابقة' type='password' id='previous_nafis_grade' register={register}/>
-                    
+                    <FileChooserSection label='ملف بيانات الطلاب' subLabel="يجب أن تكون أعمدة الملف بهذا الترتيب: اسم، رقم الهاتف، ايميل" supportedFormats={["XLS", "XLSX", "CSV"]} id='student_image' register={register} /> 
                 </div>
             </form>
         </section>

@@ -7,6 +7,11 @@
   src: url(../public/droidarabic.ttf);
 }
 
+@font-face {
+  font-family: inter;
+  src: url(../public/inter.ttf);
+}
+
 * {
   font-family: droidArabic, sans-serif;
   text-align: right;
