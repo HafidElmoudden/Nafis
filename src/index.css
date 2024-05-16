@@ -102,3 +102,11 @@ html, body {
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
+
+.hover-grow {
+  transition: transform 0.2s ease-in-out; /* Add a smooth transition */
+}
+
+.hover-grow:hover {
+  transform: scale(1.2); /* Increase size by 20% on hover */
+}

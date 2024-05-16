@@ -35,7 +35,7 @@ function StudentSettings() {
                 <div className='flex flex-col w-full items-end'>
                     <DropdownSection label='الصف' id='class' register={register} icon={<School size={20} className='text-center' />}/>
                     <Divider />
-                    <FileChooserSection label='ملف بيانات الطلاب' subLabel="يجب أن تكون أعمدة الملف بهذا الترتيب: اسم، رقم الهاتف، ايميل" supportedFormats={["XLS", "XLSX", "CSV"]} id='student_image' register={register} /> 
+                    <FileChooserSection label='ملف بيانات الطلاب' subLabel="يجب أن تكون أعمدة الملف بهذا الترتيب: اسم، رقم الهاتف، ايميل" supportedFormats={["XLS", "XLSX", "CSV"]} id='student_image' showUploadedFiles register={register} /> 
                 </div>
             </form>
         </section>

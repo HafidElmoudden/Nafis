@@ -1,10 +1,16 @@
 import React, { useRef, useState } from 'react';
 import UploadIcon from 'assets/icons/upload-icon.svg'
 import DocumentIcon from 'assets/icons/document-icon.svg'
+import TrashIcon from 'assets/icons/trash-icon.svg'
 import { map } from 'zod';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
-function FileChooserSection({ label, subLabel, id, icon, register, multiple = false, supportedFormats = [], comboBoxData = [], ...rest }) {
+function FileChooserSection({ label, subLabel, id, icon, register, multiple = false, showUploadedFiles = false, supportedFormats = [], comboBoxData = [], ...rest }) {
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [dialogState, setDialogState] = useState(false);
     const fileInputRef = useRef(null);
 
     const handleFileInputChange = (event) => {
@@ -36,6 +42,14 @@ function FileChooserSection({ label, subLabel, id, icon, register, multiple = fa
         );
     }
 
+    const closeDialog = () => {
+        setDialogState(false);
+    }
+
+    const openDialog = () => {
+        setDialogState(true);
+    }
+
     return (
         <div className='flex gap-12 w-full flex-row-reverse'>
             <div className='flex-col text-right w-52'>
@@ -64,23 +78,47 @@ function FileChooserSection({ label, subLabel, id, icon, register, multiple = fa
                     />
                 </div>
                 <br />
-                {selectedFiles.length > 0 && (
+                {selectedFiles.length > 0 && showUploadedFiles && (
                     <div className='flex flex-col gap-1'>
                         {selectedFiles.map((file) => (
-                            <div className='flex flex-row-reverse justify-start items-center px-3 gap-3 focus-within:outline w-[400px] h-[72px] focus-within:outline-primary focus-within:border-transparent bg-white font-medium box-border rounded-lg border border-accent-100 outline-none shadow-sm overflow-hidden'>
+                            <div className='relative flex flex-row-reverse justify-start items-center px-3 gap-3 focus-within:outline w-[400px] h-[72px] focus-within:outline-primary focus-within:border-transparent bg-white font-medium box-border rounded-lg border border-accent-100 outline-none shadow-sm overflow-hidden'>
                                 <img src={DocumentIcon} alt='document icon' className='size-10' />
                                 <div
                                     className='flex flex-col '
                                     key={file.name}
                                 >
                                     <div className='text-[14px] font-semibold font-inter'>{file.name}</div>
-                                    <div className='text-[14px] text-muted-foreground font-inter'>{file.size} bytes</div>
+                                    <div class="text-[14px] text-muted-foreground font-inter">
+                                        {Math.floor(file.size / 1024)}
+                                        {file.size > 1048576 ? ' MB' : ' KB'}
+                                    </div>
                                 </div>
+                                <img
+                                    src={TrashIcon}
+                                    onClick={openDialog}
+                                    alt="trash icon"
+                                    class="size-5 absolute top-4 left-4 transition-all duration-100 hover:scale-110 cursor-pointer"
+                                />
+
                             </div>
                         ))}
                     </div>
                 )}
             </div>
+            <Dialog open={dialogState} onOpenChange={setDialogState}>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>تأكيد الحذف</DialogTitle>
+                        <DialogDescription>
+                            هل أنت متأكد من حدف هذا الملف؟
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button variant="secondary" onClick={closeDialog}>الغاء</Button>
+                        <Button type="submit">تأكيد</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }
