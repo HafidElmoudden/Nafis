@@ -9,24 +9,27 @@ import { Button } from "@/components/ui/button"
 import Spinner from "components/Spinner"
 import { useNavigate } from "react-router-dom"
 import { FieldValue, FieldValues, useForm } from "react-hook-form"
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
+import { supabase } from "api/SupabaseClient"
+import { AuthTab } from "pages/authentification"
+import { signInUser } from "api/services/UserServices"
 
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
+  currentTabHandler: (newTab: AuthTab) => void;
+}
+
+export function SignInAuthForm({ className, currentTabHandler, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  console.log("Erorrs: ", errors)
 
-  async function onSubmit(data: FieldValues) {
-    setIsLoading(true)
-
-    setTimeout(() => {
-      if(data.email === "admin@admin" && data.password === "admin"){
-        navigate("/home")
-      } else {
-        alert("Invalid credentials")
-      }
-      setIsLoading(false)
-    }, 1000)
+  async function onSubmit(_data: FieldValues) {
+    const { data, error } = await signInUser(_data.email, _data.password);
+    if(!error) {
+      navigate("/home");
+    } else {
+      alert("Error: " + error.message)
+    }
   }
 
   return (
@@ -44,10 +47,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 type="email"
                 autoCapitalize="none"
                 autoComplete="email"
-                value="admin@admin"
                 autoCorrect="off"
                 disabled={isLoading}
-                {...register("email")}
+                className={errors.email ? "border-red-500" : ""}
+                {...register("email", { required: true })}
               />
             </div>
             <div>
@@ -58,12 +61,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 id="password"
                 placeholder="**************"
                 type="password"
-                value="admin"
                 autoCapitalize="none"
                 autoComplete="password"
                 autoCorrect="off"
+                className={errors.email ? "border-red-500" : ""}
+
                 disabled={isLoading}
-                {...register("password")}
+                {...register("password", { required: true })}
               />
             </div>
           </div>
@@ -72,6 +76,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               <Spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             تسجيل الدخول بالايميل
+          </Button>
+          <Button variant={"secondary"} type="button" onClick={(e) => { e.preventDefault(); currentTabHandler("sign-up") }}>
+            انشاء حساب جديد
           </Button>
         </div>
       </form>

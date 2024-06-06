@@ -4,6 +4,7 @@ import React from 'react'
 import InputSection from './input-section';
 import { Code, KeyRound, Mail, Phone, UserIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import useSession from 'hooks/useSession';
 
 function GeneralSettings() {
     const {
@@ -15,6 +16,8 @@ function GeneralSettings() {
 
     const onSubmit = (data) => console.log(data)
 
+    const session = useSession();
+    console.log("session", session);
     return (
         <section className='overflow-y-visible max-h-full'>
             <form onSubmit={handleSubmit(onSubmit)}>

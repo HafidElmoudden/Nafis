@@ -11,7 +11,7 @@ import SettingsPage from 'pages/settings-page';
 
 
 function App() {
-  // require('electron-react-devtools').install();
+  console.log("eLHAPPENO");
   return (
     <Router>
       <Routes>

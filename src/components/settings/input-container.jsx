@@ -65,12 +65,10 @@ function Switch({ label, id, register, multiple = false, multipleId }) {
     const [isChecked, setIsChecked] = React.useState(false);
 
     const handleChange = (value) => {
-        console.log("Elhappeno", value);
         setIsChecked(value);
     };
 
     useEffect(() => {
-        console.log("El happeno");
         register(`${multipleId}.${id}`, { value: isChecked });
     }, [isChecked]);
     return (

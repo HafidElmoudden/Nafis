@@ -35,19 +35,19 @@ function createWindow() {
   }
 }
 
-const installExtensions = async () => {
-  const installer = require('electron-devtools-installer')
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS
-  const extensions = [
-    'REACT_DEVELOPER_TOOLS',
-    'REDUX_DEVTOOLS',
-    'DEVTRON'
-  ]
+// const installExtensions = async () => {
+//   const installer = require('electron-devtools-installer')
+//   const forceDownload = !!process.env.UPGRADE_EXTENSIONS
+//   const extensions = [
+//     'REACT_DEVELOPER_TOOLS',
+//     'REDUX_DEVTOOLS',
+//     'DEVTRON'
+//   ]
 
-  return Promise
-    .all(extensions.map(name => installer.default(installer[name], forceDownload)))
-    .catch(console.log)
-}
+//   return Promise
+//     .all(extensions.map(name => installer.default(installer[name], forceDownload)))
+//     .catch(console.log)
+// }
 
 app.whenReady().then(async () => {
   // DevTools
@@ -55,7 +55,7 @@ app.whenReady().then(async () => {
   //   .then((name) => console.log(`Added Extension:  ${name}`))
   //   .catch((err) => console.log('An error occurred: ', err));
   
-  await installExtensions()
+  // await installExtensions()
   createWindow();
 
   app.on('activate', () => {
