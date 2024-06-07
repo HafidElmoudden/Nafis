@@ -26,7 +26,11 @@ export function SignInAuthForm({ className, currentTabHandler, ...props }: UserA
   async function onSubmit(_data: FieldValues) {
     const { data, error } = await signInUser(_data.email, _data.password);
     if(!error) {
-      navigate("/home");
+      if(!data.session?.user.user_metadata.user_type) {
+        navigate("/onboarding");
+      } else {
+        navigate("/home");
+      }
     } else {
       alert("Error: " + error.message)
     }

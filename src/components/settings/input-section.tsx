@@ -1,4 +1,19 @@
-function InputSection({ label, subLabel, type, placeholder, id, icon, register, notInput, children }) {
+import React from 'react';
+
+type InputSectionProps = {
+  label: string;
+  subLabel?: string;
+  type?: string;
+  placeholder?: string;
+  id: string;
+  value?: string;
+  icon?: React.ReactNode;
+  register?: any;
+  notInput?: boolean;
+  children?: React.ReactNode;
+};
+
+function InputSection({ label, subLabel, type, placeholder, id, value, icon, register, notInput, children }: InputSectionProps) {
   return (
     <div className='flex w-full flex-row-reverse'>
       <div className='flex flex-col items-end w-[250px]'>
@@ -11,7 +26,7 @@ function InputSection({ label, subLabel, type, placeholder, id, icon, register, 
             <div className='flex items-center px-3'>
               {icon}
             </div>}
-          <input type={type} id={id} placeholder={placeholder} className='h-full w-full text-primary-900  bg-transparent py-[12px] px-[16px] border-none outline-none box-border'
+          <input type={type} id={id} placeholder={placeholder} value={value} className='h-full w-full text-primary-900  bg-transparent py-[12px] px-[16px] border-none outline-none box-border'
             {...(register && register(id))}
           />
           

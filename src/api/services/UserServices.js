@@ -22,3 +22,24 @@ export const signUpUser = async (fullName, email, password, birthDate, phoneNumb
     });
     return { data, error };
 }
+
+export const changeUserType = async (userId, userType) => {
+    console.log("changeUserType userId: ", userId, "userType: ", userType);
+
+    // const { data, error } = await supabase.auth.updateUser({
+    //     data: {
+    //         user_type: userType
+    //     }
+    // });
+
+    const { data, error } = await supabase.from('users').update({
+        user_type: userType
+    }).eq('id', userId);
+
+    // if (error) {
+        console.error('Error updating user type:', error);
+        console.log("Data change user type: ", data);
+    // }
+
+    return { data, error };
+}

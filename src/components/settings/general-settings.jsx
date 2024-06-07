@@ -34,15 +34,15 @@ function GeneralSettings() {
                 </div>
                 <Divider />
                 <div className='flex flex-col w-full items-end'>
-                    <InputSection label='الاسم الكامل' type='text' id='full_name' icon={<UserIcon size={20} className='text-center' />} register={register} />
+                    <InputSection label='الاسم الكامل' type='text' id='full_name' value={session?.user?.user_metadata?.full_name} icon={<UserIcon size={20} className='text-center' />} register={register} />
                     <Divider />
-                    <InputSection label='البريد الالكتروني' type='email' id='email' icon={<Mail size={20} className='text-center' />} register={register} />
+                    <InputSection label='البريد الالكتروني' type='email' id='email' value={session?.user?.user_metadata?.email} icon={<Mail size={20} className='text-center' />} register={register} />
                     <Divider />
-                    <InputSection label='رقم الهاتف' type='tel' id='phone' icon={<Phone size={20} className='text-center' />} register={register} />
+                    <InputSection label='رقم الهاتف' type='tel' id='phone' value={session?.user?.user_metadata?.phone_number} icon={<Phone size={20} className='text-center' />} register={register} />
                     <Divider />
-                    <InputSection label='كلمة المرور' type='password' id='password' icon={<KeyRound size={20} className='text-center' />} register={register} />
+                    <InputSection label='كلمة المرور' type='password' id='password' placeholder={"***********"} icon={<KeyRound size={20} className='text-center' />} register={register} />
                     <Divider />
-                    <InputSection label='تأكيد كلمة المرور' type='password' id='confirm_password' icon={<KeyRound size={20} className='text-center' />} register={register} />
+                    <InputSection label='تأكيد كلمة المرور' type='password' id='confirm_password' placeholder={"***********"} icon={<KeyRound size={20} className='text-center' />} register={register} />
                 </div>
             </form>
         </section>

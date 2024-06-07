@@ -8,6 +8,7 @@ import AnalyticsPage from 'pages/analytics-page';
 import TreatmentPlanPage from 'pages/treatmentplan-page';
 import TimePlansPage from 'pages/timeplans-page';
 import SettingsPage from 'pages/settings-page';
+import OnboardingPage from 'pages/onboarding-page';
 
 
 function App() {
@@ -18,6 +19,10 @@ function App() {
         <Route
           path="/"
           element={<Authentification />}
+        />
+        <Route
+          path="/onboarding"
+          element={<OnboardingPage />}
         />
         <Route
           path="/home"
