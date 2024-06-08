@@ -70,9 +70,9 @@ function TeacherSettings() {
         <Divider />
         <div className='flex flex-col w-full items-end'>
           <InputContainer label='اضافة حساب' subLabel="قم بملئ الحقول بالمعلومات الخاصة بالحساب الذي ترغب باضافته مع الصلاحيات المرغوب منحها للحساب">
-            <Input type='text' id='full_name' placeholder="...الاسم الكامل" icon={<UserIcon size={20} className='text-center' />} register={register} />
-            <Input type='email' id='email' placeholder="...الايميل" icon={<Mail size={20} className='text-center' />} register={register} />
-            <Input type='tel' id='phone' placeholder="...رقم الهاتف" icon={<Phone size={20} className='text-center' />} register={register} />
+            {/* <Input type='text' id='full_name' placeholder="...الاسم الكامل" icon={<UserIcon size={20} className='text-center' />} register={register} /> */}
+            <Input type='email' id='email' placeholder="...البريد الالكتروني" icon={<Mail size={20} className='text-center' />} register={register} />
+            {/* <Input type='tel' id='phone' placeholder="...رقم الهاتف" icon={<Phone size={20} className='text-center' />} register={register} /> */}
             <Dropdown id='class' register={register} icon={<School size={20} className='text-center' />} />
             <Switch label={"انشاء حساب"} multipleId={"permissions"} id={"add_users"} register={register}/>
             <Switch label={"ادخال بيانات الطلاب"} multipleId={"permissions"} id={"insert_students_data"} register={register}/>

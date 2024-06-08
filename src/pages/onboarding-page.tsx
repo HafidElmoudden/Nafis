@@ -181,6 +181,47 @@ const OnboardingSecondStep = ({
     );
 };
 
+const OnboardingThirdStep = ({
+    session,
+    userType,
+    onSubmit,
+    register
+}: {
+    session: any;
+    userType: UserType;
+    onSubmit: any;
+    register: any;
+}) => {
+
+    return (
+        <div>
+            <p className="text-xl">.الخطوة الثالثة: أدخل عدد الفصول في المدرسة</p>
+            <br />
+            <br />
+            <div className="flex flex-col gap-4">
+                <InputSection
+                    label="عدد فصول الصف الثالث"
+                    type="number"
+                    id="num_third_class"
+                    register={register}
+                />
+                <InputSection
+                    label="عدد فصول الصف السادس"
+                    type="number"
+                    id="num_sixth_class"
+                    register={register}
+                />
+                <InputSection
+                    label="عدد فصول الصف الثالث المتوسط"
+                    type="number"
+                    id="num_third_mid_class"
+                    register={register}
+                />
+            </div>
+        </div>
+    );
+};
+
 function OnboardingPage() {
     const [userType, setUserType] = React.useState<UserType>(null);
     const [currentStep, setCurrentStep] = React.useState<number>(1);
@@ -195,7 +236,7 @@ function OnboardingPage() {
     const { handleSubmit, register } = useForm();
 
     const onSubmit = async (data: any) => {
-        if (userType === "moderator" && currentStep === 2) {
+        if (userType === "moderator" && currentStep === 3) {
             const schoolResponse = await addSchool(data, session.user.id);
             const { error: schoolError } = schoolResponse as { error: PostgrestError | null; };
             const userTypeResponse = await changeUserType(session.user.id, userType);
@@ -219,6 +260,13 @@ function OnboardingPage() {
             onSubmit={onSubmit}
             register={register}
             key="step2"
+        />,
+        <OnboardingThirdStep
+            session={session}
+            userType={userType}
+            onSubmit={onSubmit}
+            register={register}
+            key="step3"
         />,
     ];
 
@@ -245,7 +293,7 @@ function OnboardingPage() {
                 >
                     السابق
                 </Button>
-                {currentStep === 1 ? (
+                {currentStep < 3 ? (
                     <Button variant="default" onClick={goToNextStep}>
                         التالي
                     </Button>

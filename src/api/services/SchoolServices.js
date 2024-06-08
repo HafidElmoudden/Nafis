@@ -11,6 +11,9 @@ export const addSchool = async (school, userId) => {
             academic_year: school.academic_year,
             semester: school.semester,
             previous_nafis_grade: school.previous_nafis_grade,
+            num_third_class: school.num_third_class,
+            num_sixth_class: school.num_sixth_class,
+            num_third_mid_class: school.num_third_mid_class,
             nafis_coordinator: userId,
         });
 
@@ -22,4 +25,22 @@ export const addSchool = async (school, userId) => {
         console.error('Error inserting school:', error.message);
     }
 
+}
+
+export const getSchoolInformationsForModerator = async (userId) => {
+    if(!userId) return console.error('getSchoolInformationsForModerator: User ID is required')
+    try {
+        const { data, error } = await supabase
+            .from('schools')
+            .select('*')
+            .eq('nafis_coordinator', userId)
+            .single()
+
+        if (error) {
+            console.error('Error getting school:', error.message);
+        }
+        return { data, error };
+    } catch (error) {
+        console.error('Error getting school:', error.message);
+    }
 }

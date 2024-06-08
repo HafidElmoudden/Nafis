@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom"
 import { FieldValue, FieldValues, useForm } from "react-hook-form"
 import { supabase } from "api/SupabaseClient"
 import { AuthTab } from "pages/authentification"
-import { signInUser } from "api/services/UserServices"
+import { signInUser, verifyModeratorIsSchoolCoordinator } from "api/services/UserServices"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   currentTabHandler: (newTab: AuthTab) => void;
@@ -25,8 +25,10 @@ export function SignInAuthForm({ className, currentTabHandler, ...props }: UserA
 
   async function onSubmit(_data: FieldValues) {
     const { data, error } = await signInUser(_data.email, _data.password);
-    if(!error) {
-      if(!data.session?.user.user_metadata.user_type) {
+    const { data: moderatorSchoolVerification } = await verifyModeratorIsSchoolCoordinator(data.session?.user.id)
+    console.log("moderatorSchoolVerification: ", moderatorSchoolVerification)
+    if (!error) {
+      if (!data.session?.user.user_metadata.user_type || (moderatorSchoolVerification as any[])?.length == 0) {
         navigate("/onboarding");
       } else {
         navigate("/home");

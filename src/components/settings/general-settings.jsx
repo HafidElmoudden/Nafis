@@ -5,6 +5,7 @@ import InputSection from './input-section';
 import { Code, KeyRound, Mail, Phone, UserIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import useSession from 'hooks/useSession';
+import useUser from 'atoms/userAtom';
 
 function GeneralSettings() {
     const {
@@ -16,8 +17,7 @@ function GeneralSettings() {
 
     const onSubmit = (data) => console.log(data)
 
-    const session = useSession();
-    console.log("session", session);
+    const user = useUser();
     return (
         <section className='overflow-y-visible max-h-full'>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -34,11 +34,11 @@ function GeneralSettings() {
                 </div>
                 <Divider />
                 <div className='flex flex-col w-full items-end'>
-                    <InputSection label='الاسم الكامل' type='text' id='full_name' value={session?.user?.user_metadata?.full_name} icon={<UserIcon size={20} className='text-center' />} register={register} />
+                    <InputSection label='الاسم الكامل' type='text' id='full_name' value={user?.user_metadata?.full_name} icon={<UserIcon size={20} className='text-center' />} register={register} />
                     <Divider />
-                    <InputSection label='البريد الالكتروني' type='email' id='email' value={session?.user?.user_metadata?.email} icon={<Mail size={20} className='text-center' />} register={register} />
+                    <InputSection label='البريد الالكتروني' type='email' id='email' value={user?.user_metadata?.email} icon={<Mail size={20} className='text-center' />} register={register} />
                     <Divider />
-                    <InputSection label='رقم الهاتف' type='tel' id='phone' value={session?.user?.user_metadata?.phone_number} icon={<Phone size={20} className='text-center' />} register={register} />
+                    <InputSection label='رقم الهاتف' type='tel' id='phone' value={user?.user_metadata?.phone_number} icon={<Phone size={20} className='text-center' />} register={register} />
                     <Divider />
                     <InputSection label='كلمة المرور' type='password' id='password' placeholder={"***********"} icon={<KeyRound size={20} className='text-center' />} register={register} />
                     <Divider />

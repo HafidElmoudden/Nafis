@@ -23,6 +23,11 @@ export const signUpUser = async (fullName, email, password, birthDate, phoneNumb
     return { data, error };
 }
 
+export const verifyModeratorIsSchoolCoordinator = async (userId) => {
+    const { data, error } = await supabase.from('schools').select('*').eq('nafis_coordinator', userId);
+    return { data, error };
+}
+
 export const changeUserType = async (userId, userType) => {
     console.log("changeUserType userId: ", userId, "userType: ", userType);
 
