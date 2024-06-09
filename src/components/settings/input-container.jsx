@@ -45,12 +45,17 @@ function Input({ type, placeholder, id, icon, register }) {
 function Dropdown({ label, id, icon, register, comboBoxData = frameworks, containerStyle, ...rest }) {
     return (
         <div className={cn('flex items-center w-full flex-row-reverse', containerStyle)}>
+            {label && <div className='flex flex-col items-end w-[250px]'>
+                <label className='block text-sm font-semibold text-black w-36' htmlFor={id}>{label}</label>
+            </div>}
             <div className='focus-within:outline w-[400px] pr-2 h-10 focus-within:outline-primary focus-within:border-transparent flex flex-row-reverse items-center bg-white font-medium box-border rounded-lg border border-accent-100 outline-none shadow-sm overflow-hidden'>
                 {icon &&
                     <div className='flex items-center px-1'>
                         {icon}
                     </div>}
-                <select id={id} className='h-full w-full text-primary-900 px-[16px] border-none outline-none box-border appearance-none'>
+                <select id={id} className='h-full w-full text-primary-900 px-[16px] border-none outline-none box-border appearance-none'
+                    {...(register && register(id))}
+                >
                     {comboBoxData.map((item) => (
                         <option key={item.value} value={item.value}>{item.label}</option>
                     ))}

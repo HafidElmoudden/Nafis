@@ -5,7 +5,7 @@ import InputSection from './input-section';
 import { Code, KeyRound, Mail, Phone, UserIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import useSession from 'hooks/useSession';
-import useUser from 'atoms/userAtom';
+import useUser from 'hooks/useUser';
 
 function GeneralSettings() {
     const {

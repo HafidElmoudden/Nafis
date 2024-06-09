@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form'
 import DropdownSection from 'components/dropdown'
 import { School } from 'lucide-react'
 import FileChooserSection from 'components/fileupload-section'
+import { useSchool } from 'hooks/useSchool'
+import { useSchoolClasses } from 'hooks/useSchoolClasses'
 
 function StudentSettings() {
     const {
@@ -13,10 +15,20 @@ function StudentSettings() {
         handleSubmit,
         watch,
         formState,
-      } = useForm()
+    } = useForm()
 
-      const onSubmit = (data) => console.log(data)
+    const onSubmit = (data) => console.log(data)
+    const { school, loading, error } = useSchool();
 
+    console.log("school : ", school)
+    const schoolClasses = useSchoolClasses(school?.school_code);
+    console.log("schoolClasse : ", schoolClasses);
+    const classOptions = schoolClasses?.schoolClasses.map((item) => {
+        return {
+            value: item.id,
+            label: item.class_label
+        }
+    })
     return (
         <section>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -33,9 +45,9 @@ function StudentSettings() {
                 </div>
                 <Divider />
                 <div className='flex flex-col w-full items-end'>
-                    <DropdownSection label='الصف' id='class' register={register} icon={<School size={20} className='text-center' />}/>
+                    <DropdownSection label='الصف' id='class' comboBoxData={classOptions} register={register} icon={<School size={20} className='text-center' />} />
                     <Divider />
-                    <FileChooserSection label='ملف بيانات الطلاب' subLabel="يجب أن تكون أعمدة الملف بهذا الترتيب: اسم، رقم الهاتف، ايميل" supportedFormats={["XLS", "XLSX", "CSV"]} id='student_image' showUploadedFiles register={register} /> 
+                    <FileChooserSection label='ملف بيانات الطلاب' subLabel="يجب أن تكون أعمدة الملف بهذا الترتيب: اسم، رقم الهاتف، ايميل" supportedFormats={["XLS", "XLSX", "CSV"]} id='student_image' showUploadedFiles register={register} />
                 </div>
             </form>
         </section>

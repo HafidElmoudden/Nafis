@@ -44,3 +44,21 @@ export const getSchoolInformationsForModerator = async (userId) => {
         console.error('Error getting school:', error.message);
     }
 }
+
+export const getSchoolClasses = async (schoolId) => {
+    console.warn("getSchoolClasses: schoolId: ", schoolId)
+    try {
+        const { data, error } = await supabase
+            .from('school_classes')
+            .select('*')
+            .eq('school_code', schoolId)
+
+        if (error) {
+            console.error('Error getting classes:', error.message);
+        }
+
+        return { data, error };
+    } catch (error) {
+        console.error('Error getting classes:', error.message);
+    }
+}

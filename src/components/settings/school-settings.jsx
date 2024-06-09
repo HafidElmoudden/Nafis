@@ -8,7 +8,7 @@ import { supabase } from "api/SupabaseClient";
 import useSession from "hooks/useSession";
 import { useAtom } from 'jotai'
 import { schoolDataAtom } from "atoms/schoolAtom";
-import useUser from "atoms/userAtom";
+import useUser from "hooks/useUser";
 
 function SchoolSettings() {
   const [schoolData, setSchoolData] = useAtom(schoolDataAtom);

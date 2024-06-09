@@ -6,8 +6,10 @@ import { Code, KeyRound, Mail, Phone, SchoolIcon, UserIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form';
 import { useAtom, useAtomValue } from 'jotai';
 import { schoolDataAtom } from 'atoms/schoolAtom';
-import useUser from 'atoms/userAtom';
 import { getSchoolInformationsForModerator } from 'api/services/SchoolServices';
+import { useSchoolClasses } from 'hooks/useSchoolClasses';
+import useUser from 'hooks/useUser';
+import { useSchool } from 'hooks/useSchool';
 
 function ClassSettings() {
     const {

@@ -10,6 +10,7 @@ import { addSchool } from "api/services/SchoolServices";
 import { useNavigate } from "react-router-dom";
 import { PostgrestError } from "@supabase/supabase-js";
 import { changeUserType } from "api/services/UserServices";
+import { Dropdown } from "components/settings/input-container";
 
 type UserType = "teacher" | "moderator" | null;
 
@@ -162,12 +163,24 @@ const OnboardingSecondStep = ({
                     placeholder="1443-1444"
                     register={register}
                 />
-                <InputSection
+                {/* <InputSection
                     label="الفصل الدراسي"
                     type="text"
                     id="semester"
                     placeholder="الفصل الدراسي الأول"
                     register={register}
+                /> */}
+                <Dropdown
+                    id='semester'
+                    label="الفصل الدراسي"
+                    icon={null}
+                    containerStyle={null}
+                    register={register}
+                    comboBoxData={[
+                        { value: "first_semester", label: "الفصل الدراسي الأول" },
+                        { value: "second_semester", label: "الفصل الدراسي الثاني" },
+                        { value: "third_semester", label: "الفصل الدراسي الثالث" }
+                    ]}
                 />
                 <InputSection
                     label="درجة نافس السابقة"
