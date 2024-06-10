@@ -15,6 +15,8 @@ import { InputContainer, Input, Dropdown, Switch } from './input-container'
 import { useSchoolClasses } from 'hooks/useSchoolClasses'
 import { useSchool } from 'hooks/useSchool'
 import { MultiSelector, MultiSelectorContent, MultiSelectorInput, MultiSelectorItem, MultiSelectorList, MultiSelectorTrigger } from 'components/multi-selector'
+import { addTeacherToSchool } from 'api/services/TeacherService'
+import { useSchoolTeachers } from 'hooks/useSchoolTeachers'
 
 const TeacherCard = ({ email, isActive = false }) => {
   return <div className='flex flex-col gap-1'>
@@ -53,20 +55,28 @@ function TeacherSettings() {
     handleSubmit,
     watch,
     formState,
+    setValue
   } = useForm()
   const [dropdownValue, setDropdownValue] = useState([]);
-  const onSubmit = (data) => console.log(data)
   const { school, loading, error } = useSchool();
   const schoolClasses = useSchoolClasses(school?.school_code);
+  const schoolTeachers = useSchoolTeachers(school?.school_code);
+  console.log("schoolTeachers: ", schoolTeachers);
   const classOptions = schoolClasses?.schoolClasses?.map((item) => {
     return {
       value: item.id,
       label: item.class_label
     }
   })
+  const onSubmit = async (data) => {
+    console.log("FormData: ", data);
+    await addTeacherToSchool(school?.school_code,data);
+  }
   const handleDropdownChange = (selectedOptions) => {
+    console.log("handleDropdownChange: ", selectedOptions);
+    setValue('class', selectedOptions.map((e) => classOptions?.find((el) => el.label == e).value));
+    console.log("register qsdfsdqf: ", selectedOptions.map((e) => classOptions?.find((el) => el.label == e).value))
     setDropdownValue(selectedOptions);
-    register('class', { value: selectedOptions.map(option => option.value), label: selectedOptions.map(option => option.label) });
   };
   return (
     <section>
@@ -84,10 +94,7 @@ function TeacherSettings() {
         <Divider />
         <div className='flex flex-col w-full items-end'>
           <InputContainer label='اضافة حساب' subLabel="قم بملئ الحقول بالمعلومات الخاصة بالحساب الذي ترغب باضافته مع الصلاحيات المرغوب منحها للحساب">
-            {/* <Input type='text' id='full_name' placeholder="...الاسم الكامل" icon={<UserIcon size={20} className='text-center' />} register={register} /> */}
             <Input type='email' id='email' placeholder="...البريد الالكتروني" icon={<Mail size={20} className='text-center' />} register={register} />
-            {/* <Input type='tel' id='phone' placeholder="...رقم الهاتف" icon={<Phone size={20} className='text-center' />} register={register} /> */}
-            {/* <Dropdown id='class' register={register} comboBoxData={classOptions} icon={<School size={20} className='text-center' />} /> */}
             <MultiSelector values={dropdownValue} onValuesChange={handleDropdownChange} loop className="max-w-xs">
               <MultiSelectorTrigger className='w-[400px]' icon={<School size={20} className='text-center' />}>
                 <MultiSelectorInput className='pr-[15px]' placeholder="...صفوف المعلم" />
@@ -103,18 +110,19 @@ function TeacherSettings() {
               </MultiSelectorContent>
             </MultiSelector>
 
-            <Switch label={"انشاء حساب"} multipleId={"permissions"} id={"add_users"} register={register} />
-            <Switch label={"ادخال بيانات الطلاب"} multipleId={"permissions"} id={"insert_students_data"} register={register} />
-            <Switch label={"ادخال بيانات المعلمين"} multipleId={"permissions"} id={"insert_teachers_data"} register={register} />
-            <Switch label={"ارسال الاختبارات"} multipleId={"permissions"} id={"send_tests"} register={register} />
-            <Switch label={"اطلاع على التحليل"} multipleId={"permissions"} id={"view_analytics"} register={register} />
-            <Switch label={"اطلاع على الخطة العلاجية"} multipleId={"permissions"} id={"view_recover_plan"} register={register} />
+            <Switch label={"انشاء حساب"} multipleId={"permissions"} id={"add_users"} setValue={setValue} />
+            <Switch label={"ادخال بيانات الطلاب"} multipleId={"permissions"} id={"insert_students_data"} setValue={setValue} />
+            <Switch label={"ادخال بيانات المعلمين"} multipleId={"permissions"} id={"insert_teachers_data"} setValue={setValue} />
+            <Switch label={"ارسال الاختبارات"} multipleId={"permissions"} id={"send_tests"} setValue={setValue} />
+            <Switch label={"اطلاع على التحليل"} multipleId={"permissions"} id={"view_analytics"} setValue={setValue} />
+            <Switch label={"اطلاع على الخطة العلاجية"} multipleId={"permissions"} id={"view_recover_plan"} setValue={setValue} />
           </InputContainer>
           <Divider />
           <InputSection notInput label={"الحسابات المضافة"} subLabel={"يمكنك رؤية الحسابات المفعلة وتعديل الصلاحيات الخاصة بالحسابات"}>
             <div className='flex flex-col gap-3 justify-center items-center'>
-              <TeacherCard email="abdulhafid858@gmail.com" />
-              <TeacherCard email="saied@gmail.com" isActive={true} />
+              {schoolTeachers?.data?.map((teacher) => (
+                <TeacherCard email={teacher.email} isActive={teacher.status} />
+              ))}
             </div>
           </InputSection>
         </div>

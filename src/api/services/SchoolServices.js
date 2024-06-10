@@ -46,7 +46,6 @@ export const getSchoolInformationsForModerator = async (userId) => {
 }
 
 export const getSchoolClasses = async (schoolId) => {
-    console.warn("getSchoolClasses: schoolId: ", schoolId)
     try {
         const { data, error } = await supabase
             .from('school_classes')

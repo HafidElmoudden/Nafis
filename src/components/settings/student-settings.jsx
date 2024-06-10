@@ -20,9 +20,7 @@ function StudentSettings() {
     const onSubmit = (data) => console.log(data)
     const { school, loading, error } = useSchool();
 
-    console.log("school : ", school)
     const schoolClasses = useSchoolClasses(school?.school_code);
-    console.log("schoolClasse : ", schoolClasses);
     const classOptions = schoolClasses?.schoolClasses.map((item) => {
         return {
             value: item.id,

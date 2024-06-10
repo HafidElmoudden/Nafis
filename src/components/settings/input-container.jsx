@@ -66,7 +66,7 @@ function Dropdown({ label, id, icon, register, comboBoxData = frameworks, contai
     );
 }
 
-function Switch({ label, id, register, multiple = false, multipleId }) {
+function Switch({ label, id, register, multiple = false, multipleId, setValue }) {
     const [isChecked, setIsChecked] = React.useState(false);
 
     const handleChange = (value) => {
@@ -74,7 +74,7 @@ function Switch({ label, id, register, multiple = false, multipleId }) {
     };
 
     useEffect(() => {
-        register(`${multipleId}.${id}`, { value: isChecked });
+        setValue(`${multipleId}.${id}`, isChecked);
     }, [isChecked]);
     return (
         <div className='flex w-full flex-row-reverse'>
