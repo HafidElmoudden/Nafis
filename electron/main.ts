@@ -5,8 +5,8 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-insta
 function createWindow() {
   const win = new BrowserWindow({
     title: "تطبيق نافس",
-    width: 1150,
-    height: 800,
+    width: 1440,
+    height: 960,
     webPreferences: {
       // contextIsolation: false,
       preload: path.join(__dirname, 'preload.js')

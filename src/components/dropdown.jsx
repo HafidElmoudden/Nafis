@@ -3,33 +3,7 @@ import { ArrowDown, ChevronDown } from 'lucide-react';
 import React from 'react';
 import { cn } from 'utils';
 
-
-const frameworks = [
-    {
-        value: "third_class_1",
-        label: "1 - الصف الثالث",
-    },
-    {
-        value: "third_class_2",
-        label: "2 - الصف الثالث",
-    },
-    {
-        value: "third_class_3",
-        label: "3 - الصف الثالث",
-    },
-    {
-        value: "sixth_class_1",
-        label: "1 - الصف السادس",
-    },
-    {
-        value: "third_mid_class_1",
-        label: "1 - الصف الثالث المتوسط",
-    },
-]
-
-
-
-function DropdownSection({ label, id, icon, register, comboBoxData = frameworks, containerStyle, ...rest }) {
+function DropdownSection({ label, id, icon = null, register, comboBoxData = [], containerStyle = "", registerOptions = {}, ...rest }) {
     return (
         <div className={cn('flex items-center w-full flex-row-reverse', containerStyle)}>
             <div className='flex flex-col items-end w-[250px]'>
@@ -40,7 +14,9 @@ function DropdownSection({ label, id, icon, register, comboBoxData = frameworks,
                     <div className='flex items-center px-1'>
                         {icon}
                     </div>}
-                <select id={id} className='h-full w-full text-primary-900 px-[16px] border-none outline-none box-border appearance-none'>
+                <select id={id} className='h-full w-full text-primary-900 px-[16px] border-none outline-none box-border appearance-none'
+                    {...(register && register(id, registerOptions))}
+                >
                     {comboBoxData.map((item) => (
                         <option key={item.value} value={item.value}>{item.label}</option>
                     ))}
