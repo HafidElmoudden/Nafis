@@ -4,8 +4,8 @@ import teacherImage from "assets/teacher.svg";
 import moderatorImage from "assets/moderator.svg";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";
-import InputSection from "components/settings/input-section";
-import { useForm } from "react-hook-form";
+import InputSection from "components/input-section";
+import { FieldErrors, FieldValues, useForm } from "react-hook-form";
 import { addSchool } from "api/services/SchoolServices";
 import { useNavigate } from "react-router-dom";
 import { PostgrestError } from "@supabase/supabase-js";
@@ -13,7 +13,8 @@ import { changeUserType } from "api/services/UserServices";
 import useUser from "hooks/useUser";
 import ProgressBar from "components/onboarding/progressbar";
 import CheckIcon from "assets/icons/check-icon.svg";
-import DropdownSection from "components/dropdown";
+import DropdownSection from "components/dropdown-section";
+import { useToast } from "@/components/ui/use-toast";
 
 type UserType = "teacher" | "moderator" | null;
 
@@ -47,7 +48,6 @@ const UserTypeCard = ({
     userTypeHandler,
     image,
 }: UserTypeCardProps) => {
-    console.log("Rendering UserTypeCard", actualUserType, type);
     const isActive = actualUserType === type;
     return (
         <div
@@ -76,11 +76,13 @@ const UserTypeCard = ({
 const OnboardingFirstStep = ({
     userType,
     userTypeHandler,
-    steps
+    steps,
+    errors
 }: {
     userType: UserType;
     userTypeHandler: (type: UserType) => void;
-    steps: Step[]
+    steps: Step[];
+    errors: FieldErrors<FieldValues>;
 }) => {
     const user = useUser();
     return (
@@ -124,10 +126,12 @@ const OnboardingFirstStep = ({
 
 const OnboardingSecondStep = ({
     steps,
-    register
+    register,
+    errors
 }: {
     steps: Step[]
     register: any;
+    errors: FieldErrors<FieldValues>
 }) => {
     const user = useUser();
     return (
@@ -150,9 +154,10 @@ const OnboardingSecondStep = ({
                                 type="text"
                                 id="school_code"
                                 placeholder="123456"
-                                helpTooltipMessage="الرقم الوزاري هو رقم الهوية الوطنية للمدرسة"
+                                tooltipMessage="الرقم الوزاري هو رقم الهوية الوطنية للمدرسة"
                                 register={register}
-                                registerOptions={{ required: true }}
+                                registerOptions={{ required: ".المرجو تعبئة هذا الحقل" }}
+                                errors={errors}
                             />
                             <InputSection
                                 label="اسم المدرسة"
@@ -161,6 +166,7 @@ const OnboardingSecondStep = ({
                                 placeholder="ثانوية الفلاح الأهلية"
                                 register={register}
                                 registerOptions={{ required: true }}
+                                errors={errors}
                             />
                             <InputSection
                                 label="الادارة التعليمية"
@@ -169,6 +175,7 @@ const OnboardingSecondStep = ({
                                 placeholder="إدارة التعليم بمنطقة القصيم"
                                 register={register}
                                 registerOptions={{ required: true }}
+                                errors={errors}
                             />
                             <InputSection
                                 label="مكتب التعليم"
@@ -177,6 +184,7 @@ const OnboardingSecondStep = ({
                                 placeholder="مكتب تعليم الفضيلة"
                                 register={register}
                                 registerOptions={{ required: true }}
+                                errors={errors}
                             />
                             <InputSection
                                 label="مدير المدرسة"
@@ -185,6 +193,7 @@ const OnboardingSecondStep = ({
                                 placeholder="محمد الفلاني"
                                 register={register}
                                 registerOptions={{ required: true }}
+                                errors={errors}
                             />
                             <InputSection
                                 label="السنة الدراسية"
@@ -193,6 +202,7 @@ const OnboardingSecondStep = ({
                                 placeholder="1443-1444"
                                 register={register}
                                 registerOptions={{ required: true }}
+                                errors={errors}
                             />
                             <DropdownSection
                                 id='semester'
@@ -210,9 +220,10 @@ const OnboardingSecondStep = ({
                                 type="number"
                                 id="previous_nafis_grade"
                                 placeholder="أدخل درجة نافس السابقة"
-                                helpTooltipMessage="درجة نافس السابقة هي النسبة المئوية للنجاح في العام الدراسي السابق"
+                                tooltipMessage="درجة نافس السابقة هي النسبة المئوية للنجاح في العام الدراسي السابق"
                                 min="0"
                                 max="100"
+                                errors={errors}
                                 register={register}
                                 registerOptions={{ required: true, min: 0, max: 100 }}
                             />
@@ -226,17 +237,19 @@ const OnboardingSecondStep = ({
 
 const OnboardingThirdStep = ({
     steps,
-    register
+    register,
+    errors
 }: {
     steps: Step[]
     register: any;
+    errors: FieldErrors<FieldValues>
 }) => {
     const user = useUser();
     return (
         <>
             <header className="flex flex-col justify-end gap-4 h-[80px] w-full">
                 <div className="text-2xl">👋 مرحبا بك <span className="font-bold">{user && (user as any).user_metadata?.full_name}</span></div>
-                <div className="text-gray-600 font-normal text-xl">.لاكمال عملية انشاء الحساب سنقوم ببضع الخطوات الاضافية</div>
+                <div className="text-gray-600 font-normal text-xl">.لاكمال عملية انشاء الحساب سنقوم ببعض الخطوات الاضافية</div>
             </header>
             <section className="flex flex-row-reverse gap-8 pt-[50px]">
                 <ProgressBar steps={steps} />
@@ -282,12 +295,14 @@ function OnboardingPage() {
     const [progressBarSteps, setProgressBarSteps] = React.useState<Step[]>(initialSteps);
     const session: any = useSession();
     const navigate = useNavigate();
+    const { toast } = useToast()
+
 
     const userTypeHandler = (type: UserType) => {
         setUserType(type);
     };
 
-    const { handleSubmit, register } = useForm();
+    const { handleSubmit, register, trigger, formState: { errors } } = useForm({ mode: "onChange" });
 
     const onSubmit = async (data: any) => {
         if (userType === "moderator" && currentStep === 3) {
@@ -307,29 +322,51 @@ function OnboardingPage() {
             userType={userType}
             steps={progressBarSteps}
             userTypeHandler={userTypeHandler}
-        />,
-        <OnboardingSecondStep
+            errors={errors}
+            />,
+            <OnboardingSecondStep
             register={register}
             steps={progressBarSteps}
             key="step2"
-        />,
-        <OnboardingThirdStep
+            errors={errors}
+            />,
+            <OnboardingThirdStep
             register={register}
             steps={progressBarSteps}
             key="step3"
+            errors={errors}
         />,
     ];
 
-    const goToNextStep = () => {
-        setProgressBarSteps((prevSteps) => {
-            const newSteps = [...prevSteps];
-            if (currentStep < newSteps.length - 1) {
-                newSteps[currentStep].completed = "true";
-                newSteps[currentStep + 1].completed = "current";
-                setCurrentStep(currentStep + 1);
-            }
-            return newSteps;
-        });
+    const goToNextStep = async () => {
+        if (currentStep === 1 && !userType) {
+            toast({
+                variant: "destructive",
+                title: "!حدث خطأ",
+                description: "المرجو اختيار نوع الحساب",
+                duration: 5000
+            })
+            return;
+        }
+
+        const isStepValid = await trigger();
+        if (isStepValid) {
+            setProgressBarSteps((prevSteps) => {
+                const newSteps = [...prevSteps];
+                if (currentStep < newSteps.length - 1) {
+                    newSteps[currentStep].completed = "true";
+                    newSteps[currentStep + 1].completed = "current";
+                    setCurrentStep(currentStep + 1);
+                }
+                return newSteps;
+            });
+        } else {
+            toast({
+                variant: "destructive",
+                title: "!حدث خطأ",
+                description: "المرجو ملء جميع الحقول المطلوبة بشكل صحيح",
+            })
+        }
     };
 
     const goToPreviousStep = () => {

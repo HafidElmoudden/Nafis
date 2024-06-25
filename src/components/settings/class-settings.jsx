@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import Divider from 'components/divider';
 import React, { useEffect } from 'react'
-import InputSection from './input-section';
+import InputSection from '../input-section';
 import { Code, KeyRound, Mail, Phone, SchoolIcon, UserIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useAtom, useAtomValue } from 'jotai';

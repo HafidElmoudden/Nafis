@@ -17,7 +17,9 @@ const TooltipContent = React.forwardRef<
     ref={ref}
     sideOffset={sideOffset}
     className={cn(
-      "z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+      // If you want to hide the arrow add overflow-hidden here.
+      "z-50 rounded-md border bg-[#1a1a1a] text-white px-3 py-1.5 text-sm shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+      "p-2 rounded-lg text-sm relative before:absolute before:content-[''] before:top-full before:left-1/2 before:transform before:-translate-x-1/2 before:border-[5px] before:border-t-[#1a1a1a] before:border-r-transparent before:border-b-transparent before:border-l-transparent",
       className
     )}
     {...props}

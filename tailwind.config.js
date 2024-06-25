@@ -60,6 +60,10 @@ module.exports = {
           foreground: "rgb(219 234 254 / var(--tw-bg-opacity))",
         }
       },
+      boxShadow: {
+        'custom-light': '0px 1px 2px 0px rgba(16, 24, 40, 0.05)',
+        'custom-red': '0px 0px 4px 0px #FEE4E2',
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

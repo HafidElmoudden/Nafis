@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import Divider from 'components/divider';
 import React from 'react'
-import InputSection from './input-section';
+import InputSection from '../input-section';
 import { Code, KeyRound, Mail, Phone, UserIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import useSession from 'hooks/useSession';

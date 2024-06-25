@@ -1,17 +1,15 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import Divider from 'components/divider'
 import { useForm } from 'react-hook-form'
-import DropdownSection from 'components/dropdown'
-import { Mail, Pencil, Phone, School, UserIcon } from 'lucide-react'
-import FileChooserSection from 'components/fileupload-section'
-import InputSection from './input-section'
-import DocumentIcon from 'assets/icons/document-icon.svg'
+import { Mail, School } from 'lucide-react'
+import InputSection from '../input-section'
 import TrashIcon from 'assets/icons/trash-icon.svg'
 import EditIcon from 'assets/icons/edit-icon.svg'
 import AvatarIcon from 'assets/default_avatar.png'
 import { cn } from 'utils'
-import { InputContainer, Input, Dropdown, Switch } from './input-container'
+import Input from 'components/Input'
+import Switch from 'components/Switch'
 import { useSchoolClasses } from 'hooks/useSchoolClasses'
 import { useSchool } from 'hooks/useSchool'
 import { MultiSelector, MultiSelectorContent, MultiSelectorInput, MultiSelectorItem, MultiSelectorList, MultiSelectorTrigger } from 'components/multi-selector'
@@ -42,8 +40,6 @@ const TeacherCard = ({ email, isActive = false }) => {
           alt="trash icon"
           className="size-5 absolute top-10 left-4 transition-all duration-100 hover:scale-110 cursor-pointer"
         />
-
-
       </div>
     }
   </div>
@@ -53,8 +49,6 @@ function TeacherSettings() {
   const {
     register,
     handleSubmit,
-    watch,
-    formState,
     setValue
   } = useForm()
   const [dropdownValue, setDropdownValue] = useState([]);
@@ -70,7 +64,7 @@ function TeacherSettings() {
   })
   const onSubmit = async (data) => {
     console.log("FormData: ", data);
-    await addTeacherToSchool(school?.school_code,data);
+    await addTeacherToSchool(school?.school_code, data);
   }
   const handleDropdownChange = (selectedOptions) => {
     console.log("handleDropdownChange: ", selectedOptions);
@@ -93,7 +87,7 @@ function TeacherSettings() {
         </div>
         <Divider />
         <div className='flex flex-col w-full items-end'>
-          <InputContainer label='اضافة حساب' subLabel="قم بملئ الحقول بالمعلومات الخاصة بالحساب الذي ترغب باضافته مع الصلاحيات المرغوب منحها للحساب">
+          <InputSection notInput label='اضافة حساب' subLabel="قم بملئ الحقول بالمعلومات الخاصة بالحساب الذي ترغب باضافته مع الصلاحيات المرغوب منحها للحساب">
             <Input type='email' id='email' placeholder="...البريد الالكتروني" icon={<Mail size={20} className='text-center' />} register={register} />
             <MultiSelector values={dropdownValue} onValuesChange={handleDropdownChange} loop className="max-w-xs">
               <MultiSelectorTrigger className='w-[400px]' icon={<School size={20} className='text-center' />}>
@@ -116,7 +110,7 @@ function TeacherSettings() {
             <Switch label={"ارسال الاختبارات"} multipleId={"permissions"} id={"send_tests"} setValue={setValue} />
             <Switch label={"اطلاع على التحليل"} multipleId={"permissions"} id={"view_analytics"} setValue={setValue} />
             <Switch label={"اطلاع على الخطة العلاجية"} multipleId={"permissions"} id={"view_recover_plan"} setValue={setValue} />
-          </InputContainer>
+          </InputSection>
           <Divider />
           <InputSection notInput label={"الحسابات المضافة"} subLabel={"يمكنك رؤية الحسابات المفعلة وتعديل الصلاحيات الخاصة بالحسابات"}>
             <div className='flex flex-col gap-3 justify-center items-center'>

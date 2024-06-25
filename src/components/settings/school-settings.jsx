@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import React, { useEffect } from "react";
-import InputSection from "./input-section";
+import InputSection from "../input-section";
 import Divider from "components/divider";
 import { useForm } from "react-hook-form";
 import { getSchoolInformationsForModerator } from "api/services/SchoolServices";
