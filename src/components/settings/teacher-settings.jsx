@@ -74,6 +74,7 @@ function TeacherSettings() {
   };
   return (
     <section>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-row-reverse justify-between items-center">
           <div>
@@ -85,9 +86,9 @@ function TeacherSettings() {
             <Button type='submit'>حفظ</Button>
           </div>
         </div>
-        <Divider />
-        <div className='flex flex-col w-full items-end'>
-          <InputSection notInput label='اضافة حساب' subLabel="قم بملئ الحقول بالمعلومات الخاصة بالحساب الذي ترغب باضافته مع الصلاحيات المرغوب منحها للحساب">
+        {/* <Divider />
+        <div className='flex flex-col w-full items-end h-full'>
+          <InputSection isNotInput label='اضافة حساب' subLabel="قم بملئ الحقول بالمعلومات الخاصة بالحساب الذي ترغب باضافته مع الصلاحيات المرغوب منحها للحساب">
             <Input type='email' id='email' placeholder="...البريد الالكتروني" icon={<Mail size={20} className='text-center' />} register={register} />
             <MultiSelector values={dropdownValue} onValuesChange={handleDropdownChange} loop className="max-w-xs">
               <MultiSelectorTrigger className='w-[400px]' icon={<School size={20} className='text-center' />}>
@@ -112,7 +113,7 @@ function TeacherSettings() {
             <Switch label={"اطلاع على الخطة العلاجية"} multipleId={"permissions"} id={"view_recover_plan"} setValue={setValue} />
           </InputSection>
           <Divider />
-          <InputSection notInput label={"الحسابات المضافة"} subLabel={"يمكنك رؤية الحسابات المفعلة وتعديل الصلاحيات الخاصة بالحسابات"}>
+          <InputSection isNotInput label={"الحسابات المضافة"} subLabel={"يمكنك رؤية الحسابات المفعلة وتعديل الصلاحيات الخاصة بالحسابات"}>
             <div className='flex flex-col gap-3 justify-center items-center'>
               {schoolTeachers?.data?.map((teacher) => (
                 <TeacherCard email={teacher.email} isActive={teacher.status} />
@@ -120,6 +121,7 @@ function TeacherSettings() {
             </div>
           </InputSection>
         </div>
+       */}
       </form>
     </section>
   )

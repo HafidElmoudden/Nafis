@@ -24,6 +24,7 @@ type InputContainerProps = {
     errors?: Record<string, any>;
     children: React.ReactNode;
     containerStyle?: string;
+    isNotInput?: boolean;
 };
 
 function InputContainer({
@@ -35,6 +36,7 @@ function InputContainer({
     errors,
     children,
     containerStyle = "",
+    isNotInput = false,
 }: InputContainerProps) {
     const hasError = errors && errors[id];
     const errorMessage = hasError ? String(errors[id]?.message) : null;
@@ -53,7 +55,11 @@ function InputContainer({
                         } outline-none shadow-sm overflow-hidden`}
                 >
                     {icon && <div className='flex items-center px-3'>{icon}</div>}
-                    {children}
+                    {!isNotInput ? (
+                        <div className="flex-grow">{children}</div>
+                    ) : (
+                        <div className="flex flex-col w-full">{children}</div>
+                    )}
                     {tooltipMessage && (
                         <div className="flex items-center pl-3.5">
                             <Tooltip delayDuration={300}>

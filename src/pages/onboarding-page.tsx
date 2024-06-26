@@ -238,13 +238,13 @@ const OnboardingSecondStep = ({
               <DropdownSection
                 id="semester"
                 label="الفصل الدراسي"
-                placeholder="...اختر الفصل الدراسي"
+                // placeholder="...اختر الفصل الدراسي"
                 comboBoxData={[
                   { value: "first_semester", label: "الفصل الدراسي الأول" },
                   { value: "second_semester", label: "الفصل الدراسي الثاني" },
                   { value: "third_semester", label: "الفصل الدراسي الثالث" },
                 ]}
-                tooltipMessage="الفصل الدراسي هو الفصل الدراسي الحالي"
+                // tooltipMessage="الفصل الدراسي هو الفصل الدراسي الحالي"
                 register={register}
                 registerOptions={{ required: true }}
                 errors={errors}
@@ -422,6 +422,8 @@ function OnboardingPage() {
   };
 
   const goToPreviousStep = () => {
+    if(currentStep === 1) return navigate("/");
+
     setProgressBarSteps((prevSteps) => {
       const newSteps = [...prevSteps];
       if (currentStep > 0) {
@@ -462,7 +464,6 @@ function OnboardingPage() {
           onClick={goToPreviousStep}
           color="#F5FAFF"
           className="text-gray-600 w-[74px]"
-          disabled={currentStep === 1}
         >
           السابق
         </Button>

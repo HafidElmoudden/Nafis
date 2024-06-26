@@ -50,6 +50,7 @@ function DropdownSection({
           <option key={item.value} value={item.value}>{item.label}</option>
         ))}
       </select>
+      {/* TODO: Make the ChevronDown icon align correctly. Add the placeholder and a tooltip message to a dropdown instance to see what i mean. */}
       <div className='flex justify-center items-center pl-3.5'>
         <ChevronDown size={17} />
       </div>
