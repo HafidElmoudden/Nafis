@@ -109,7 +109,7 @@ const OnboardingFirstStep = ({
             {user && (user as any).user_metadata?.full_name}
           </span>
         </div>
-        <div className="text-gray-600 font-normal text-xl">
+        <div className="text-muted-foreground font-normal text-xl">
           .لاكمال عملية انشاء الحساب سنقوم ببضع الخطوات الاضافية
         </div>
       </header>
@@ -165,7 +165,7 @@ const OnboardingSecondStep = ({
             {user && (user as any).user_metadata?.full_name}
           </span>
         </div>
-        <div className="text-gray-600 font-normal text-xl">
+        <div className="text-muted-foreground font-normal text-xl">
           .لاكمال عملية انشاء الحساب سنقوم ببضع الخطوات الاضافية
         </div>
       </header>
@@ -288,7 +288,7 @@ const OnboardingThirdStep = ({
             {user && (user as any).user_metadata?.full_name}
           </span>
         </div>
-        <div className="text-gray-600 font-normal text-xl">
+        <div className="text-muted-foreground font-normal text-xl">
           .لاكمال عملية انشاء الحساب سنقوم ببعض الخطوات الاضافية
         </div>
       </header>

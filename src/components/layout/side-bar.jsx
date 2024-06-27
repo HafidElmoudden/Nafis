@@ -1,12 +1,34 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCalendarDays, faChartLine, faFileCircleCheck, faFileCircleQuestion, faGears, faHouse } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import clsx from 'clsx'
 import { useLocation, useNavigate } from 'react-router-dom'
+import HomeIcon from 'assets/icons/navbar/home-icon'
+import React, { useState } from 'react'
+import CalendarIcon from 'assets/icons/navbar/calendar-icon'
+import LifeBuoyIcon from 'assets/icons/navbar/life-buoy-icon'
+import PieChartIcon from 'assets/icons/navbar/pie-chart-icon'
+import FileIcon from 'assets/icons/navbar/file-icon'
+import UsersIcon from 'assets/icons/navbar/users-icon'
+import { motion, AnimatePresence } from 'framer-motion';
+import CornerDownIcon from 'assets/icons/navbar/corner-down-icon'
+import SettingsIcon from 'assets/icons/navbar/settings-icon'
+import XCloseIcon from 'assets/icons/navbar/x-close-icon'
+import { Doughnut } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import AvatarImage from 'assets/default_avatar.png'
+import useUser from 'hooks/useUser'
+import LogoutIcon from 'assets/icons/navbar/logout-icon'
+import { Tooltip as STooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { supabase } from 'api/SupabaseClient'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
+import { useSchool } from 'hooks/useSchool'
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const getPathName = (path) => {
     switch (path) {
         case '/home':
-            return 'الرئيسية'
+            return 'لوحة القيادة'
         case '/tests':
             return 'الاختبارات'
         case '/analytics':
@@ -17,49 +39,254 @@ const getPathName = (path) => {
             return 'الخطط الزمنية'
         case '/settings':
             return 'الاعدادات'
+        case '/individuals':
+            return 'الأفراد'
         default:
             return 'الرئيسية'
     }
 }
 
-const Divider = () => {
+const Divider = (backgroundColor = "bg-neutral-200") => {
     return (
-        <div className='w-full h-px bg-neutral-200'></div>
+        <div className={clsx('w-full h-px', backgroundColor)}></div>
     )
 }
 
-const SideBarElement = ({ title, icon, active, onClick }) => {
-    const location = useLocation();
-    const currentPath = getPathName(location.pathname);
+const NafisGradeCard = ({ value }) => {
+    const {school, loading, error} = useSchool();
+    console.log("school", school)
+    const percentage = school.previous_nafis_grade || 0;
+
+    const data = {
+        datasets: [
+            {
+                data: [percentage, 100 - percentage],
+                backgroundColor: ['#F4EBFF', '#53B1FD'],
+                circumference: 360,
+                rotation: 270,
+                borderWidth: 0,
+                borderRadius: {
+                    outerStart: 10,
+                    outerEnd: 10,
+                    innerStart: 10,
+                    innerEnd: 10,
+                },
+            },
+        ],
+    };
+
+
+    const options = {
+        cutout: '80%',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false,
+            },
+            tooltip: {
+                enabled: false,
+            },
+        },
+    };
     return (
-        <div onClick={onClick} className={clsx('flex px-[20px] relative gap-2 w-[calc(100%-35px)] h-10 rounded-lg cursor-pointer  flex-row-reverse items-center duration-300',
-            currentPath === title && 'bg-blue-100 before:h-[22px] before:rounded before:bg-blue-600 before:w-[4px] before:absolute before:right-1',
-            currentPath !== title && 'hover:bg-blue-50')}>
-            <FontAwesomeIcon className='font-semibold text-[16px] text-neutral-600' icon={icon} />
-            <span className='text-[14px] font-semibold text-neutral-600 truncate'>{title}</span>
+        <div className='relative flex flex-col items-end gap-4 w-[248px] h-[150px] rounded-lg bg-blue-500 px-4 py-5'>
+            <div className='absolute top-4 left-4 w-[36px] h-[36px]'>
+                <XCloseIcon />
+            </div>
+
+            <div className='relative w-[52px] h-[52px] '>
+                <Doughnut data={data} options={options} />
+                <div
+                    className='absolute text-center text-[14px] text-white font-inter font-medium top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center'
+                >
+                    {`${percentage}%`}
+                </div>
+            </div>
+
+            <div className='flex flex-col'>
+                <p className='text-white text-sm font-bold text-right'>درجة نافس للسنة السابقة</p>
+            </div>
+
+            <div className='flex w-full justify-start gap-2'>
+                <div className='w-[6px] h-[6px] rounded-full bg-blue-50'></div>
+                <div className='w-[6px] h-[6px] rounded-full bg-blue-300'></div>
+                <div className='w-[6px] h-[6px] rounded-full bg-blue-300'></div>
+                <div className='w-[6px] h-[6px] rounded-full bg-blue-300'></div>
+            </div>
+
+
         </div>
     )
 }
 
+const SideBarElement = ({ title, icon: IconComponent, onClick, children, badgeCount, isDot }) => {
+    const location = useLocation();
+    const currentPath = getPathName(location.pathname);
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleDropdown = (e) => {
+        e.stopPropagation();
+        setIsOpen(!isOpen);
+    };
+
+    return (
+        <div>
+            <div
+                onClick={children ? toggleDropdown : onClick}
+                className={clsx('relative flex flex-row-reverse gap-2 w-[248px] h-10 px-[12px] py-[8px] rounded-md cursor-pointer items-center duration-300',
+                    currentPath === title && 'bg-blue-500',
+                    currentPath !== title && 'hover:bg-blue-400')}
+            >
+                <div className='flex flex-row-reverse items-center w-[182px] h-[24px] gap-3'>
+                    {isDot && <div className='bg-blue-300 w-2 h-2 rounded-full'></div>}
+                    <IconComponent className='font-normal text-[24px] text-white' />
+                    <span className='text-[16px] font-normal text-white truncate'>{title}</span>
+                </div>
+
+                {/* The badge */}
+                {badgeCount ? (<div className='flex items-center justify-center bg-blue-50 w-[30px] h-[22px] rounded-2xl py-[2px] px-[8px]'>
+                    <span className='font-inter font-medium text-xs text-center text-blue-500'>{badgeCount}</span>
+                </div>) : <div className='w-[30px] h-[22px] py-[2px] px-[8px]'></div>}
+
+                {children && (
+                    <div className='flex items-center justify-center w-5 h-5'>
+                        <motion.div
+                            animate={{ rotate: isOpen ? 180 : 0 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <FontAwesomeIcon className='font-semibold text-[16px] text-blue-300' icon={faChevronDown} />
+                        </motion.div>
+                    </div>
+                )}
+            </div>
+            <AnimatePresence>
+                {isOpen && children && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="pt-2 last:pb-2 overflow-hidden"
+                    >
+                        <motion.div className="px-2 flex flex-col items-center justify-center gap-2">
+
+                            {children}
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+};
+const SideBarDropdownElement = ({ title, icon: IconComponent, onClick }) => (
+    <div
+        className="flex flex-row-reverse gap-3 w-[206px] h-[40px] text-white text-sm py-2 px-4 hover:bg-blue-400 rounded-md cursor-pointer"
+        onClick={onClick}
+    >
+        {IconComponent ? <IconComponent className='font-normal text-[24px] text-white' /> : <CornerDownIcon className='font-normal text-[24px] text-white' />}
+        <p className='text-[16px] font-normal text-white truncate'>{title}</p>
+    </div>
+);
+
+const useAlertDialog = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const openDialog = () => setIsOpen(true);
+    const closeDialog = () => setIsOpen(false);
+
+    const AlertDialogComponent = ({
+        title,
+        description,
+        onConfirm,
+        confirmText = "تأكيد",
+        cancelText = "الغاء",
+    }) => (
+        <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>{title}</AlertDialogTitle>
+                    <AlertDialogDescription>{description}</AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel onClick={closeDialog}>{cancelText}</AlertDialogCancel>
+                    <AlertDialogAction onClick={onConfirm}>{confirmText}</AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    );
+
+    return {
+        openDialog,
+        closeDialog,
+        AlertDialogComponent,
+    };
+};
+
+const AccountCard = () => {
+    const user = useUser();
+    const navigate = useNavigate();
+    const { openDialog, closeDialog, AlertDialogComponent } = useAlertDialog();
+    console.log("user", user)
+    const handleConfirm = () => {
+        supabase.auth.signOut();
+        navigate("/");
+        closeDialog();
+    };
+    return (
+        <div className='flex gap-3 items-center justify-center'>
+            <STooltip delayDuration={300}>
+                <TooltipTrigger>
+                    <div onClick={openDialog}>
+                        <LogoutIcon className='rotate-180' />
+                    </div>
+                </TooltipTrigger>
+                <TooltipContent sideOffset={10} className="">
+                    تسجيل الخروج
+                </TooltipContent>
+            </STooltip>
+            <div className='flex flex-col'>
+                <p className='font-semibold text-sm text-white'>{user?.user_metadata?.full_name}</p>
+                <p className='font-inter text-[10px] text-blue-200'>{user?.user_metadata?.email}</p>
+            </div>
+            <img src={AvatarImage} alt="user" className='w-[40px] h-[40px] rounded-full' />
+            <AlertDialogComponent
+                title="هل انت متأكد من تسجيل الخروج؟"
+                onConfirm={handleConfirm}
+            />
+        </div>
+    )
+}
 function SideBar() {
     const navigate = useNavigate();
     return (
-        <section className='flex flex-col py-4 justify-between  h-[calc(100%-70px)] w-[200px] border border-y-0 fixed top-16 right-0'>
-            <div className='flex flex-col items-center gap-2'>
-                <SideBarElement onClick={() => navigate("/home")} title='الرئيسية' icon={faHouse} />
-                <SideBarElement onClick={() => navigate("/tests")} title='الاختبارات' icon={faFileCircleQuestion} />
-                <SideBarElement onClick={() => navigate("/analytics")} title='تحليل البيانات' icon={faChartLine} />
-                <SideBarElement onClick={() => navigate("/treatmentplans")} title='الخطط العلاجية' icon={faFileCircleCheck} />
-                <SideBarElement onClick={() => navigate("/timeplans")} title='الخطط الزمنية' icon={faCalendarDays} />
-            </div>
-
-            <div className='block'>
-                <Divider />
-                <div className='flex justify-center py-3'>
-                    <SideBarElement onClick={() => navigate("/settings")} title='الاعدادات' icon={faGears} />
+        <section className='flex flex-col bg-blue-600 justify-between h-full w-[280px] fixed right-0'>
+            <nav className='flex flex-col gap-4 pt-[24px] '>
+                <header className='w-[280px] h-[24px] px-6'>
+                    <p className='font-bold text-base text-white'>LOGO</p>
+                </header>
+                <div className='px-6'>
+                    <p className='text-blue-300 text-lg'>القائمة الرئيسية</p>
                 </div>
-            </div>
+                <div className='flex flex-col px-4 gap-1'>
+                    <SideBarElement title='لوحة القيادة' icon={HomeIcon} onClick={() => navigate('/home')} />
+                    <SideBarElement title='الاختبارات' icon={FileIcon} onClick={() => navigate('/tests')} />
+                    <SideBarElement title='تحليل البيانات' icon={PieChartIcon} onClick={() => navigate('/analytics')} />
+                    <SideBarElement title='الخطط العلاجية' icon={LifeBuoyIcon} onClick={() => navigate('/treatmentplans')} />
+                    <SideBarElement title='الخطط الزمنية' icon={CalendarIcon} onClick={() => navigate('/timeplans')} />
+                    <SideBarElement title='الأفراد' icon={UsersIcon} onClick={() => navigate('/timeplans')} >
+                        <SideBarDropdownElement title='المعلمون' onClick={() => navigate('/timeplans')} />
+                        <SideBarDropdownElement title='الطلاب' onClick={() => navigate('/timeplans')} />
+                    </SideBarElement>
+                </div>
+            </nav>
 
+            <footer className='flex flex-col gap-6 px-4 pb-8'>
+                <SideBarElement title='الاعدادات' icon={SettingsIcon} onClick={() => navigate('/settings')} />
+                <NafisGradeCard />
+                <div className='bg-[#2E90FA] h-px w-full'></div>
+                <AccountCard />
+            </footer>
         </section>
     )
 }

@@ -14,9 +14,9 @@ export const withLayout = (
 function Layout({ children }) {
   return (
     <div className='w-screen h-screen'>
-      <NavBar />
+      {/* <NavBar /> */}
       <SideBar />
-      <section className='w-[calc(100%-200px)] h-[calc(100%-64px)]'>{children}</section>
+      <section className='w-[calc(100%-280px)] h-[calc(100%-64px)]'>{children}</section>
     </div>
   )
 }
