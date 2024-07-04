@@ -103,7 +103,7 @@ const NafisRankingCards = ({ title, value, isChart, totalSchools, idx }) => {
     };
     return (
         <div className="relative flex flex-col items-end gap-2 w-[248px]  rounded-lg bg-blue-500 px-4 py-5">
-            <div className="flex flex-row-reverse gap-4 items-center">
+            <div className="flex flex-row gap-4 items-center">
                 <div className="relative w-[52px] h-[52px] ">
                     {isChart
                         ? (<Doughnut data={data} options={options} />)
@@ -123,7 +123,7 @@ const NafisRankingCards = ({ title, value, isChart, totalSchools, idx }) => {
             <div className="flex w-full justify-start gap-2">
                 {Array.from({ length: 4 }).map((_, index) => (
                     <div key={index} className={clsx("w-[6px] h-[6px] rounded-full", idx === index ? "bg-blue-50" : "bg-blue-300")}></div>
-                )).reverse()}
+                ))}
             </div>
         </div>
     );
@@ -148,9 +148,10 @@ const GradeCarousel = () => {
                     delay: 4000
                 }),
             ]}
+            dir="rtl"
             opts={{
-
                 loop: true,
+                direction: 'rtl',
             }}
             className="w-full max-w-xs"
         >
