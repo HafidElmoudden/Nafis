@@ -7,6 +7,7 @@ function createWindow() {
     title: "تطبيق نافس",
     width: 1440,
     height: 960,
+    icon: __dirname + "/../../public/logo.png",
     autoHideMenuBar: true,
     webPreferences: {
       // contextIsolation: false,
