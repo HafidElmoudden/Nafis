@@ -16,7 +16,7 @@ function Layout({ children }) {
     <div className='w-screen h-screen'>
       {/* <NavBar /> */}
       <SideBar />
-      <section className='w-[calc(100%-280px)] h-[calc(100%-64px)]'>{children}</section>
+      <section className='w-[calc(100%-280px)] h-fit bg-[#FAFCFF]'>{children}</section>
     </div>
   )
 }

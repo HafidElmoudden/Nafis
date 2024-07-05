@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/carousel";
 import { useSchool } from "hooks/useSchool";
 import Autoplay from 'embla-carousel-autoplay'
+import useAlertDialog from "hooks/useAlertDialog";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -120,7 +121,7 @@ const NafisRankingCards = ({ title, value, isChart, totalSchools, idx }) => {
                 </div>
             </div>
 
-            <div className="flex w-full justify-start gap-2">
+            <div className="flex w-full justify-end gap-2">
                 {Array.from({ length: 4 }).map((_, index) => (
                     <div key={index} className={clsx("w-[6px] h-[6px] rounded-full", idx === index ? "bg-blue-50" : "bg-blue-300")}></div>
                 ))}
@@ -259,43 +260,6 @@ const SideBarDropdownElement = ({ title, icon: IconComponent, onClick }) => (
     </div>
 );
 
-const useAlertDialog = () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    const openDialog = () => setIsOpen(true);
-    const closeDialog = () => setIsOpen(false);
-
-    const AlertDialogComponent = ({
-        title,
-        description,
-        onConfirm,
-        confirmText = "تأكيد",
-        cancelText = "الغاء",
-    }) => (
-        <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-            <AlertDialogContent>
-                <AlertDialogHeader>
-                    <AlertDialogTitle>{title}</AlertDialogTitle>
-                    <AlertDialogDescription>{description}</AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                    <AlertDialogCancel onClick={closeDialog}>
-                        {cancelText}
-                    </AlertDialogCancel>
-                    <AlertDialogAction onClick={onConfirm}>
-                        {confirmText}
-                    </AlertDialogAction>
-                </AlertDialogFooter>
-            </AlertDialogContent>
-        </AlertDialog>
-    );
-
-    return {
-        openDialog,
-        closeDialog,
-        AlertDialogComponent,
-    };
-};
 
 const AccountCard = () => {
     const user = useUser();
