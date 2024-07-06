@@ -3,15 +3,21 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 // import { Icons } from "../../assets/Icons"
 import Spinner from "components/Spinner"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { FieldValue, FieldValues, useForm } from "react-hook-form"
 import { supabase } from "api/SupabaseClient"
 import { AuthTab } from "pages/authentification"
 import { signInUser, verifyModeratorIsSchoolCoordinator } from "api/services/UserServices"
+import Input from "components/Input"
+import { EnvelopeClosedIcon } from "@radix-ui/react-icons"
+import GeometricShape from "assets/geometric_shape.svg"
+import InboxIcon from "assets/icons/inbox-icon.svg"
+import LockIcon from "assets/icons/lock-icon.svg"
+import clsx from "clsx"
+import { Checkbox } from "@/components/ui/checkbox"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   currentTabHandler: (newTab: AuthTab) => void;
@@ -39,55 +45,88 @@ export function SignInAuthForm({ className, currentTabHandler, ...props }: UserA
   }
 
   return (
-    <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid gap-2">
-          <div className="grid gap-3">
-            <div>
-              <Label htmlFor="email">
-                الايميل
-              </Label>
-              <Input
-                id="email"
-                placeholder="name@example.com"
-                type="email"
-                autoCapitalize="none"
-                autoComplete="email"
-                autoCorrect="off"
-                disabled={isLoading}
-                className={errors.email ? "border-red-500" : ""}
-                {...register("email", { required: true })}
-              />
-            </div>
-            <div>
-              <Label htmlFor="email" className="bold">
-                الباسورد
-              </Label>
-              <Input
-                id="password"
-                placeholder="**************"
-                type="password"
-                autoCapitalize="none"
-                autoComplete="password"
-                autoCorrect="off"
-                className={errors.email ? "border-red-500" : ""}
-
-                disabled={isLoading}
-                {...register("password", { required: true })}
-              />
-            </div>
-          </div>
-          <Button disabled={isLoading}>
-            {isLoading && (
-              <Spinner className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            تسجيل الدخول بالايميل
-          </Button>
-          <Button variant={"secondary"} type="button" onClick={(e) => { e.preventDefault(); currentTabHandler("sign-up") }}>
-            انشاء حساب جديد
-          </Button>
+    <form className="flex flex-col gap-5 w-[360px]" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-3">
+        <p className="text-[#101828] text-4xl">تسجيل الدخول</p>
+        <p className="text-[#475467]">.مرحبًا بعودتك! الرجاء إدخال التفاصيل الخاصة بك</p>
+      </div>
+      <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-[6px]">
+          <Label htmlFor="email" className="text-sm text-[#344054] font-medium">
+            البريد الإلكتروني
+          </Label>
+          <Input
+            icon={<img src={InboxIcon} className="w-full h-full" />}
+            id="email"
+            placeholder="name@example.com"
+            type="email"
+            className={clsx("w-[360px] h-[44px]", errors.email ? "border-red-500" : "")}
+            // autoCapitalize="none"
+            // autoComplete="email"
+            // autoCorrect="off"
+            disabled={isLoading}
+            {...register("email", { required: true })} />
         </div>
-      </form>
-    </div>
+        <div className="flex flex-col gap-[6px]">
+          <Label htmlFor="password" className="text-sm text-[#344054] font-medium">
+            كلمة المرور
+          </Label>
+          <Input
+            icon={<img src={LockIcon} className="w-full h-full" />}
+            id="password"
+            placeholder="**************"
+            type="password"
+            className={clsx("w-[360px] h-[44px]", errors.email ? "border-red-500" : "")}
+            // autoCapitalize="none"
+            // autoComplete="password"
+            // autoCorrect="off"
+            // className={errors.email ? "border-red-500" : ""}
+            disabled={isLoading}
+            {...register("password", { required: true })} />
+        </div>
+        <div className="flex justify-between items-center">
+          <div className="flex gap-2 items-center justify-center">
+            <Checkbox id="rememberme" color="black" className="border-[#D0D5DD] data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-500" />
+            <label
+              htmlFor="rememberme"
+              className="text-sm font-medium"
+            >
+              تذكرني
+            </label>
+          </div>
+          <p className="text-blue-700">نسيت كلمة المرور</p>
+        </div>
+        <Button className="h-[44px]" disabled={isLoading}>
+          {isLoading && (
+            <Spinner className="mr-2 h-4 w-4 animate-spin" />
+          )}
+          تسجيل الدخول
+        </Button>
+        <Button variant={"outline"} className="h-[44px]" type="button" onClick={(e) => { e.preventDefault(); currentTabHandler("sign-up") }}>
+          انشاء حساب
+        </Button>
+      </div>
+
+      <div>
+        <p className="px-8 text-center text-sm text-muted-foreground">
+          بالنقر فوق الاستمرار، أنت توافق على {" "}
+          <Link
+            to="/"
+            className="underline underline-offset-4 hover:text-primary"
+          >
+            شروط الخدمة
+          </Link>
+          {" "}
+          و {" "}
+          <Link
+            to="/"
+            className="underline underline-offset-4 hover:text-primary"
+          >
+            سياسة الخصوصية
+          </Link>
+          .
+        </p>
+      </div>
+    </form>
   )
 }
