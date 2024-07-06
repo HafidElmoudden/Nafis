@@ -18,6 +18,7 @@ import InboxIcon from "assets/icons/inbox-icon.svg"
 import LockIcon from "assets/icons/lock-icon.svg"
 import clsx from "clsx"
 import { Checkbox } from "@/components/ui/checkbox"
+import { useToast } from "@/components/ui/use-toast"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   currentTabHandler: (newTab: AuthTab) => void;
@@ -26,10 +27,13 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
 export function SignInAuthForm({ className, currentTabHandler, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm({mode: "onChange"});
+  const { toast } = useToast();
+
   console.log("Erorrs: ", errors)
 
   async function onSubmit(_data: FieldValues) {
+    console.log("hello : ",_data);
     const { data, error } = await signInUser(_data.email, _data.password);
     const { data: moderatorSchoolVerification } = await verifyModeratorIsSchoolCoordinator(data.session?.user.id)
     console.log("moderatorSchoolVerification: ", moderatorSchoolVerification)
@@ -40,7 +44,12 @@ export function SignInAuthForm({ className, currentTabHandler, ...props }: UserA
         navigate("/home");
       }
     } else {
-      alert("Error: " + error.message)
+      toast({
+        variant: "destructive",
+        title: "!حدث خطأ",
+        description: ".المرجو التأكد من البريد الإلكتروني وكلمة المرور والمحاولة مرة أخرى",
+        duration: 5000,
+      });
     }
   }
 
@@ -58,14 +67,14 @@ export function SignInAuthForm({ className, currentTabHandler, ...props }: UserA
           <Input
             icon={<img src={InboxIcon} className="w-full h-full" />}
             id="email"
-            placeholder="name@example.com"
+            placeholder="أدخل بريدك الالكتروني"
             type="email"
             className={clsx("w-[360px] h-[44px]", errors.email ? "border-red-500" : "")}
             // autoCapitalize="none"
             // autoComplete="email"
             // autoCorrect="off"
-            disabled={isLoading}
-            {...register("email", { required: true })} />
+            register={register("email", { required: ".المرجو ملئ الحقل بالشكل الصحيح" })}
+            />
         </div>
         <div className="flex flex-col gap-[6px]">
           <Label htmlFor="password" className="text-sm text-[#344054] font-medium">
@@ -76,13 +85,13 @@ export function SignInAuthForm({ className, currentTabHandler, ...props }: UserA
             id="password"
             placeholder="**************"
             type="password"
-            className={clsx("w-[360px] h-[44px]", errors.email ? "border-red-500" : "")}
+            className={clsx("w-[360px] h-[44px]", errors.password ? "border-red-500" : "")}
             // autoCapitalize="none"
             // autoComplete="password"
             // autoCorrect="off"
             // className={errors.email ? "border-red-500" : ""}
-            disabled={isLoading}
-            {...register("password", { required: true })} />
+            register={register("password", { required: ".المرجو ملئ الحقل بالشكل الصحيح" })}
+             />
         </div>
         <div className="flex justify-between items-center">
           <div className="flex gap-2 items-center justify-center">
@@ -94,15 +103,15 @@ export function SignInAuthForm({ className, currentTabHandler, ...props }: UserA
               تذكرني
             </label>
           </div>
-          <p className="text-blue-700">نسيت كلمة المرور</p>
+          <p className="text-blue-700 cursor-pointer">نسيت كلمة المرور</p>
         </div>
-        <Button className="h-[44px]" disabled={isLoading}>
+        <Button className="h-[44px]" disabled={isLoading} type="submit">
           {isLoading && (
             <Spinner className="mr-2 h-4 w-4 animate-spin" />
           )}
           تسجيل الدخول
         </Button>
-        <Button variant={"outline"} className="h-[44px]" type="button" onClick={(e) => { e.preventDefault(); currentTabHandler("sign-up") }}>
+        <Button variant={"outline"} className="h-[44px]" onClick={(e) => { currentTabHandler("sign-up") }}>
           انشاء حساب
         </Button>
       </div>
