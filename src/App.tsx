@@ -9,6 +9,7 @@ import TreatmentPlanPage from 'pages/treatmentplan-page';
 import TimePlansPage from 'pages/timeplans-page';
 import SettingsPage from 'pages/settings-page';
 import OnboardingPage from 'pages/onboarding-page';
+import StudentsPage from 'pages/students-page';
 
 
 function App() {
@@ -43,6 +44,10 @@ function App() {
         <Route
           path="/timeplans"
           element={withLayout(TimePlansPage)()}
+        />
+        <Route
+          path="/students"
+          element={withLayout(StudentsPage)()}
         />
         <Route
           path="/settings"

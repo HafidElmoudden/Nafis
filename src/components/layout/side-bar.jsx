@@ -55,8 +55,10 @@ const getPathName = (path) => {
             return "تحليل البيانات";
         case "/treatmentplans":
             return "الخطط العلاجية";
-        case "/timeplans":
+        case "/timeplans":  
             return "الخطط الزمنية";
+        case "/students":
+            return "الطلاب";    
         case "/settings":
             return "الاعدادات";
         case "/individuals":
@@ -246,9 +248,12 @@ const SideBarElement = ({
     );
 };
 
-const SideBarDropdownElement = ({ title, icon: IconComponent, onClick }) => (
+const SideBarDropdownElement = ({ title, icon: IconComponent, onClick }) => {
+    const location = useLocation();
+    const currentPath = getPathName(location.pathname);
+    return (
     <div
-        className="flex flex-row-reverse gap-3 w-[206px] h-[40px] text-white text-sm py-2 px-4 hover:bg-blue-400 rounded-md cursor-pointer"
+        className={clsx("flex flex-row-reverse gap-3 w-[206px] h-[40px] text-white text-sm py-2 px-4 hover:bg-blue-400 rounded-md cursor-pointer", currentPath === title && "bg-blue-500")}
         onClick={onClick}
     >
         {IconComponent ? (
@@ -258,7 +263,7 @@ const SideBarDropdownElement = ({ title, icon: IconComponent, onClick }) => (
         )}
         <p className="text-[16px] font-normal text-white truncate">{title}</p>
     </div>
-);
+)};
 
 
 const AccountCard = () => {
@@ -352,7 +357,7 @@ function SideBar() {
                         />
                         <SideBarDropdownElement
                             title="الطلاب"
-                            onClick={() => navigate("/timeplans")}
+                            onClick={() => navigate("/students")}
                         />
                     </SideBarElement>
                 </div>
