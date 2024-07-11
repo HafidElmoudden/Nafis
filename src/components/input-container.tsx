@@ -2,6 +2,8 @@
 import React from 'react';
 import { cn } from 'utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import ChevronSelectorIcon from "assets/icons/chevron-selector-icon.svg";
+import { ChevronDown } from 'lucide-react';
 
 const HelpCircleIcon = ({ strokeColor = "#98A2B3", fillColor = "none", className = "" }) => (
     <svg width="16" height="17" viewBox="0 0 16 17" fill={fillColor} xmlns="http://www.w3.org/2000/svg" className={className}>
@@ -24,6 +26,7 @@ type InputContainerProps = {
     errors?: Record<string, any>;
     children: React.ReactNode;
     containerStyle?: string;
+    type?: string;
     isNotInput?: boolean;
 };
 
@@ -36,6 +39,7 @@ function InputContainer({
     errors,
     children,
     containerStyle = "",
+    type = "text",
     isNotInput = false,
 }: InputContainerProps) {
     const hasError = errors && errors[id];
@@ -50,8 +54,8 @@ function InputContainer({
             <div className="flex flex-col">
                 <div
                     className={`focus-within:outline w-[400px] h-10 focus-within:border-transparent flex flex-row-reverse bg-white shadow-custom-light font-medium box-border rounded-lg border ${hasError
-                            ? "border-[#FDA29B] focus-within:outline-[#FDA29B] shadow-custom-red"
-                            : "border-accent-100 focus-within:outline-primary"
+                        ? "border-[#FDA29B] focus-within:outline-[#FDA29B] shadow-custom-red"
+                        : "border-accent-100 focus-within:outline-primary"
                         } outline-none shadow-sm overflow-hidden`}
                 >
                     {icon && <div className='flex items-center px-3'>{icon}</div>}
@@ -72,6 +76,23 @@ function InputContainer({
                             </Tooltip>
                         </div>
                     )}
+                    {type === "number" && (
+                        <div className="flex items-center pl-3.5">
+                            <img
+                                src={ChevronSelectorIcon}
+                                alt="selector"
+                                className="w-3 h-3"
+                            />
+                        </div>
+                    )}
+
+                    {type === "dropdown" && (
+                        <div className='flex justify-center items-center pl-3.5'>
+                            <ChevronDown size={17} />
+                        </div>
+                    )
+
+                    }
                 </div>
                 {hasError && errorMessage && (
                     <span className="text-[#F04438] text-sm mt-[6px]">

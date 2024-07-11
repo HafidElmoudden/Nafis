@@ -1,6 +1,5 @@
 // InputSection.jsx
 import React from "react";
-import ChevronSelectorIcon from "assets/icons/chevron-selector-icon.svg";
 import InputContainer from "./input-container";
 
 type InputSectionProps = {
@@ -43,6 +42,7 @@ function InputSection({
       icon={icon}
       tooltipMessage={tooltipMessage}
       errors={errors}
+      type={type}
     >
       <input
         type={type}
@@ -54,15 +54,7 @@ function InputSection({
         {...(register && register(id, registerOptions))}
         {...props}
       />
-      {type === "number" && (
-        <div className="flex items-center pl-3.5">
-          <img
-            src={ChevronSelectorIcon}
-            alt="selector"
-            className="w-3 h-3"
-          />
-        </div>
-      )}
+
     </InputContainer>
   );
 }

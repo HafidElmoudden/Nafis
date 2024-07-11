@@ -1,6 +1,5 @@
 // DropdownSection.jsx
 import React from 'react';
-import { ChevronDown } from 'lucide-react';
 import InputContainer from './input-container';
 
 type DropdownSectionProps = {
@@ -37,6 +36,7 @@ function DropdownSection({
       tooltipMessage={tooltipMessage}
       errors={errors}
       containerStyle={containerStyle}
+      type='dropdown'
     >
       <select
         id={id}
@@ -51,9 +51,6 @@ function DropdownSection({
         ))}
       </select>
       {/* TODO: Make the ChevronDown icon align correctly. Add the placeholder and a tooltip message to a dropdown instance to see what i mean. */}
-      <div className='flex justify-center items-center pl-3.5'>
-        <ChevronDown size={17} />
-      </div>
     </InputContainer>
   );
 }
