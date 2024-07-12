@@ -53,9 +53,10 @@ function InputContainer({
             </div>
             <div className="flex flex-col">
                 <div
-                    className={`focus-within:outline w-[400px] h-10 focus-within:border-transparent flex flex-row-reverse bg-white shadow-custom-light font-medium box-border rounded-lg border ${hasError
-                        ? "border-[#FDA29B] focus-within:outline-[#FDA29B] shadow-custom-red"
-                        : "border-accent-100 focus-within:outline-primary"
+                    className={`focus-within:outline w-[400px] h-10 focus-within:border-transparent flex flex-row-reverse bg-white shadow-custom-light font-medium box-border rounded-lg border 
+                    ${hasError
+                            ? "border-[#FDA29B] focus-within:outline-[#FDA29B] shadow-custom-red"
+                            : "border-accent-100 focus-within:outline-primary"
                         } outline-none shadow-sm overflow-hidden`}
                 >
                     {icon && <div className='flex items-center px-3'>{icon}</div>}
@@ -70,7 +71,7 @@ function InputContainer({
                                 <TooltipTrigger>
                                     <HelpCircleIcon strokeColor={hasError ? "#F04438" : undefined} fillColor="white" className="w-4 h-4" />
                                 </TooltipTrigger>
-                                <TooltipContent sideOffset={10} className="">
+                                <TooltipContent sideOffset={10} className="bg-[#101828]">
                                     <p>{tooltipMessage}</p>
                                 </TooltipContent>
                             </Tooltip>

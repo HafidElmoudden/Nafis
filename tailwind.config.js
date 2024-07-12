@@ -7,6 +7,14 @@ module.exports = {
     './app/**/*.{ts,tsx,js,jsx}',
     './src/**/*.{ts,tsx,js,jsx}',
   ],
+  safelist: [
+    {
+      pattern: /^bg-(blue|green|yellow|red|purple|pink|indigo|cyan|teal|lime|amber|orange|emerald|violet|fuchsia|rose|sky)-[1-9]00$/,
+    },
+    {
+      pattern: /^text-(blue|green|yellow|red|purple|pink|indigo|cyan|teal|lime|amber|orange|emerald|violet|fuchsia|rose|sky)-[1-9]00$/,
+    },
+  ],
   prefix: "",
   theme: {
     fontFamily: {
@@ -63,6 +71,8 @@ module.exports = {
       boxShadow: {
         'custom-light': '0px 1px 2px 0px rgba(16, 24, 40, 0.05)',
         'custom-red': '0px 0px 4px 0px #FEE4E2',
+        'custom-red-shadow': '0px 0px 0px 4px #FEE4E2',
+        'custom-blue-shadow': '0px 0px 0px 4px  rgba(37, 99, 235, 0.3)',
       },
       borderRadius: {
         lg: "var(--radius)",

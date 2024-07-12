@@ -1,7 +1,13 @@
+// webpack.config.js
 module.exports = {
-    resolve: {
-        fallback: {
-            "fs": false
+    // other configurations...
+    module: {
+      rules: [
+        {
+          test: /\.svg$/,
+          use: ['@svgr/webpack'],
         },
-    }
-}
+      ],
+    },
+  };
+  
