@@ -265,7 +265,7 @@ const AccountCard = () => {
     const user = useUser();
     const navigate = useNavigate();
     const { openDialog, closeDialog, AlertDialogComponent } = useAlertDialog();
-    console.log("user", user);
+    
     const handleConfirm = () => {
         supabase.auth.signOut();
         navigate("/");

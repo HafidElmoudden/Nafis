@@ -38,6 +38,9 @@ export function SignInAuthForm({ className, currentTabHandler, ...props }: UserA
     const { data: moderatorSchoolVerification } = await verifyModeratorIsSchoolCoordinator(data.session?.user.id)
     console.log("moderatorSchoolVerification: ", moderatorSchoolVerification)
     if (!error) {
+      console.log("meow1: ", moderatorSchoolVerification)
+      console.log("meow2", data.session?.user.user_metadata.user_type)
+      console.log("meow3", data)
       if (!data.session?.user.user_metadata.user_type || (moderatorSchoolVerification as any[])?.length == 0) {
         navigate("/onboarding");
       } else {

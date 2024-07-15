@@ -31,20 +31,21 @@ export const verifyModeratorIsSchoolCoordinator = async (userId) => {
 export const changeUserType = async (userId, userType) => {
     console.log("changeUserType userId: ", userId, "userType: ", userType);
 
-    // const { data, error } = await supabase.auth.updateUser({
-    //     data: {
-    //         user_type: userType
-    //     }
-    // });
+    const { data, error } = await supabase.auth.updateUser({
+        data: {
+            user_type: userType
+        }
+    });
 
-    const { data, error } = await supabase.from('users').update({
-        user_type: userType
-    }).eq('id', userId);
+    // const { data, error } = await supabase.from('users').update({
+    //     user_type: userType
+    // }).eq('id', userId);
 
-    // if (error) {
+    if (error) {
         console.error('Error updating user type:', error);
-        console.log("Data change user type: ", data);
-    // }
+    } else {
+        console.log('User type updated successfully');
+    }
 
     return { data, error };
 }
