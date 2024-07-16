@@ -16,7 +16,7 @@ import Logo from "assets/logo.svg";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import AvatarImage from "assets/default_avatar.png";
-import useUser from "hooks/useUser";
+import useUser, { useUserType } from "hooks/useUser";
 import LogoutIcon from "assets/icons/navbar/logout-icon";
 import {
     Tooltip as STooltip,
@@ -40,8 +40,11 @@ import {
     CarouselItem,
 } from "@/components/ui/carousel";
 import { useSchool } from "hooks/useSchool";
-import Autoplay from 'embla-carousel-autoplay'
+import Autoplay from "embla-carousel-autoplay";
 import useAlertDialog from "hooks/useAlertDialog";
+import { useTheme } from "components/theme-context";
+import AwardIcon from "assets/icons/navbar/award-icon";
+import { cn } from "utils";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -57,6 +60,8 @@ const getPathName = (path) => {
             return "الخطط العلاجية";
         case "/timeplans":
             return "الخطط الزمنية";
+        case "/skills":
+            return "المهارات";
         case "/settings":
             return "الاعدادات";
         case "/individuals":
@@ -103,17 +108,26 @@ const NafisRankingCards = ({ title, value, isChart, totalSchools, idx }) => {
         },
     };
     return (
-        <div className="relative flex flex-col items-end gap-2 w-[248px]  rounded-lg bg-blue-500 px-4 py-5">
+        <div className="relative flex flex-col items-end gap-2 w-[248px] rounded-lg bg-blue-500 px-4 py-5">
             <div className="flex flex-row gap-4 items-center">
                 <div className="relative w-[52px] h-[52px] ">
-                    {isChart
-                        ? (<Doughnut data={data} options={options} />)
-                        : (<div className="flex items-center justify-center w-[52px] h-[52px] font-inter rounded-full">
-                            <p className="font-inter font-medium text-white text-base">{value}<span className="text-xl font-inter font-bold">/{totalSchools}</span></p>
-                        </div>)}
-                    {isChart && <div className="absolute text-center text-[14px] text-white font-inter font-medium top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center">
-                        {`${value}%`}
-                    </div>}
+                    {isChart ? (
+                        <Doughnut data={data} options={options} />
+                    ) : (
+                        <div className="flex items-center justify-center w-[52px] h-[52px] font-inter rounded-full">
+                            <p className="font-inter font-medium text-white text-base">
+                                {value}
+                                <span className="text-xl font-inter font-bold">
+                                    /{totalSchools}
+                                </span>
+                            </p>
+                        </div>
+                    )}
+                    {isChart && (
+                        <div className="absolute text-center text-[14px] text-white font-inter font-medium top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center">
+                            {`${value}%`}
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex flex-col">
@@ -123,7 +137,13 @@ const NafisRankingCards = ({ title, value, isChart, totalSchools, idx }) => {
 
             <div className="flex w-full justify-end gap-2">
                 {Array.from({ length: 4 }).map((_, index) => (
-                    <div key={index} className={clsx("w-[6px] h-[6px] rounded-full", idx === index ? "bg-blue-50" : "bg-blue-300")}></div>
+                    <div
+                        key={index}
+                        className={clsx(
+                            "w-[6px] h-[6px] rounded-full",
+                            idx === index ? "bg-blue-50" : "bg-blue-300"
+                        )}
+                    ></div>
                 ))}
             </div>
         </div>
@@ -132,13 +152,17 @@ const NafisRankingCards = ({ title, value, isChart, totalSchools, idx }) => {
 
 const GradeCarousel = () => {
     const { school, loading, error } = useSchool();
-    console.log("school", school)
+    console.log("school", school);
     const percentage = school?.previous_nafis_grade ?? 0;
 
     const cardData = [
         { title: "درجة نافس للسنة السابقة", value: percentage, isChart: true },
         { title: "ترتيب المؤسسة على مستوى مكتب التعلم", value: 4, isChart: false },
-        { title: "ترتيب  المؤسسة على مستوى الادارة التعليمية", value: 50, isChart: false },
+        {
+            title: "ترتيب  المؤسسة على مستوى الادارة التعليمية",
+            value: 50,
+            isChart: false,
+        },
         { title: "ترتيب  المؤسسة على مستوى المملكة", value: 105, isChart: false },
     ];
 
@@ -146,20 +170,26 @@ const GradeCarousel = () => {
         <Carousel
             plugins={[
                 Autoplay({
-                    delay: 4000
+                    delay: 4000,
                 }),
             ]}
             dir="rtl"
             opts={{
                 loop: true,
-                direction: 'rtl',
+                direction: "rtl",
             }}
             className="w-full max-w-xs"
         >
             <CarouselContent>
                 {cardData.map((data, index) => (
                     <CarouselItem key={index}>
-                        <NafisRankingCards idx={index} title={data.title} value={data.value} isChart={data.isChart} totalSchools={140} />
+                        <NafisRankingCards
+                            idx={index}
+                            title={data.title}
+                            value={data.value}
+                            isChart={data.isChart}
+                            totalSchools={140}
+                        />
                     </CarouselItem>
                 ))}
             </CarouselContent>
@@ -178,6 +208,7 @@ const SideBarElement = ({
     const location = useLocation();
     const currentPath = getPathName(location.pathname);
     const [isOpen, setIsOpen] = useState(false);
+    const { theme } = useTheme();
 
     const toggleDropdown = (e) => {
         e.stopPropagation();
@@ -190,8 +221,8 @@ const SideBarElement = ({
                 onClick={children ? toggleDropdown : onClick}
                 className={clsx(
                     "relative flex flex-row-reverse gap-2 w-[248px] h-10 px-[12px] py-[8px] rounded-md cursor-pointer items-center duration-300",
-                    currentPath === title && "bg-blue-500",
-                    currentPath !== title && "hover:bg-blue-400"
+                    currentPath === title && theme.sidebar.elementBackground,
+                    currentPath !== title && theme.sidebar.elementBackgroundHover
                 )}
             >
                 <div className="flex flex-row-reverse items-center w-[182px] h-[24px] gap-3">
@@ -220,7 +251,7 @@ const SideBarElement = ({
                             transition={{ duration: 0.3 }}
                         >
                             <FontAwesomeIcon
-                                className="font-semibold text-[16px] text-blue-300"
+                                className={cn("font-semibold text-[16px]", theme.sidebar.dropdownElementsChevronIcon)}
                                 icon={faChevronDown}
                             />
                         </motion.div>
@@ -260,42 +291,47 @@ const SideBarDropdownElement = ({ title, icon: IconComponent, onClick }) => (
     </div>
 );
 
-
 const AccountCard = () => {
     const user = useUser();
     const navigate = useNavigate();
     const { openDialog, closeDialog, AlertDialogComponent } = useAlertDialog();
-    
+    const { theme } = useTheme();
+
     const handleConfirm = () => {
         supabase.auth.signOut();
         navigate("/");
         closeDialog();
     };
     return (
-        <div className="flex gap-3 items-center justify-center">
+        <div className="flex gap-3 items-center justify-between">
             <STooltip delayDuration={300}>
                 <TooltipTrigger>
                     <div onClick={openDialog}>
-                        <LogoutIcon className="rotate-180" />
+                        <LogoutIcon
+                            className="rotate-180"
+                            color={theme.sidebar.logoutIcon}
+                        />
                     </div>
                 </TooltipTrigger>
                 <TooltipContent sideOffset={10} className="">
                     تسجيل الخروج
                 </TooltipContent>
             </STooltip>
-            <div className="flex flex-col">
-                <p className="font-semibold text-sm text-white">
-                    {user?.user_metadata?.full_name}
-                </p>
-                <p className="font-inter text-[10px] text-blue-200">
-                    {user?.user_metadata?.email}
-                </p>
+            <div className="flex gap-3">
+                <div className="flex flex-col">
+                    <p className="font-semibold text-sm text-white">
+                        {user?.user_metadata?.full_name}
+                    </p>
+                    <p className={cn("font-inter text-[10px]", theme.sidebar.emailText)}>
+                        {user?.user_metadata?.email}
+                    </p>
+                </div>
+                <img
+                    src={AvatarImage}
+                    alt="user"
+                    className="w-[40px] h-[40px] rounded-full"
+                />
             </div>
-            <img
-                src={AvatarImage}
-                alt="user"
-                className="w-[40px] h-[40px] rounded-full"
-            />
             <AlertDialogComponent
                 title="هل انت متأكد من تسجيل الخروج؟"
                 onConfirm={handleConfirm}
@@ -306,56 +342,100 @@ const AccountCard = () => {
 
 function SideBar() {
     const navigate = useNavigate();
+    const user = useUser();
+    const { theme } = useTheme();
+    const userType = useUserType();
+    const moderatorElements = (
+        <>
+            <SideBarElement
+                title="لوحة القيادة"
+                icon={HomeIcon}
+                onClick={() => navigate("/home")}
+            />
+            <SideBarElement
+                title="الاختبارات"
+                icon={FileIcon}
+                onClick={() => navigate("/tests")}
+            />
+            <SideBarElement
+                title="تحليل البيانات"
+                icon={PieChartIcon}
+                onClick={() => navigate("/analytics")}
+            />
+            <SideBarElement
+                title="الخطط العلاجية"
+                icon={LifeBuoyIcon}
+                onClick={() => navigate("/treatmentplans")}
+            />
+            <SideBarElement
+                title="الخطط الزمنية"
+                icon={CalendarIcon}
+                onClick={() => navigate("/timeplans")}
+            />
+            <SideBarElement
+                title="الأفراد"
+                icon={UsersIcon}
+                onClick={() => navigate("/timeplans")}
+            >
+                <SideBarDropdownElement
+                    title="المعلمون"
+                    onClick={() => navigate("/timeplans")}
+                />
+                <SideBarDropdownElement
+                    title="الطلاب"
+                    onClick={() => navigate("/timeplans")}
+                />
+            </SideBarElement>
+        </>
+    );
+
+    const teacherElements = moderatorElements;
+
+    const adminElements = (
+        <>
+            <SideBarElement
+                title="لوحة القيادة"
+                icon={HomeIcon}
+                onClick={() => navigate("/home")}
+            />
+            <SideBarElement
+                title="المهارات"
+                icon={AwardIcon}
+                onClick={() => navigate("/skills")}
+            />
+        </>
+    );
+
+    const renderElements = () => {
+        switch (userType) {
+            case "admin":
+                return adminElements;
+            case "teacher":
+                return teacherElements;
+            case "moderator":
+                return moderatorElements;
+            default:
+                return null;
+        }
+    };
+
     return (
-        <section className="flex flex-col bg-blue-600 justify-between h-full w-[280px] fixed right-0 overflow-hidden">
+        <section
+            className={cn(
+                "flex flex-col justify-between h-full w-[280px] fixed right-0 overflow-hidden",
+                theme.sidebar.sidebarBackground
+            )}
+        >
             <nav className="flex flex-col gap-4 pt-[24px] ">
                 <header className="flex items-center justify-end w-[280px] h-[24px] px-6">
                     <img src={Logo} alt="logo" className="w-[70px] h-[100px]" />
                 </header>
                 <div className="px-6">
-                    <p className="text-blue-300 text-lg">القائمة الرئيسية</p>
+                    <p className={cn("text-lg", theme.sidebar.sidebarTitle)}>
+                        القائمة الرئيسية
+                    </p>
                 </div>
-                <div className="flex flex-col px-4 gap-1">
-                    <SideBarElement
-                        title="لوحة القيادة"
-                        icon={HomeIcon}
-                        onClick={() => navigate("/home")}
-                    />
-                    <SideBarElement
-                        title="الاختبارات"
-                        icon={FileIcon}
-                        onClick={() => navigate("/tests")}
-                    />
-                    <SideBarElement
-                        title="تحليل البيانات"
-                        icon={PieChartIcon}
-                        onClick={() => navigate("/analytics")}
-                    />
-                    <SideBarElement
-                        title="الخطط العلاجية"
-                        icon={LifeBuoyIcon}
-                        onClick={() => navigate("/treatmentplans")}
-                    />
-                    <SideBarElement
-                        title="الخطط الزمنية"
-                        icon={CalendarIcon}
-                        onClick={() => navigate("/timeplans")}
-                    />
-                    <SideBarElement
-                        title="الأفراد"
-                        icon={UsersIcon}
-                        onClick={() => navigate("/timeplans")}
-                    >
-                        <SideBarDropdownElement
-                            title="المعلمون"
-                            onClick={() => navigate("/timeplans")}
-                        />
-                        <SideBarDropdownElement
-                            title="الطلاب"
-                            onClick={() => navigate("/timeplans")}
-                        />
-                    </SideBarElement>
-                </div>
+                <div className="flex flex-col px-4 gap-1">{renderElements()}</div>
             </nav>
 
             <footer className="flex flex-col gap-6 px-4 pb-8">
@@ -364,8 +444,8 @@ function SideBar() {
                     icon={SettingsIcon}
                     onClick={() => navigate("/settings")}
                 />
-                <GradeCarousel />
-                <div className="bg-[#2E90FA] h-px w-full"></div>
+                {userType !== "admin" && <GradeCarousel />}
+                <div className={cn("h-px w-full", theme.sidebar.divider)}></div>
                 <AccountCard />
             </footer>
         </section>

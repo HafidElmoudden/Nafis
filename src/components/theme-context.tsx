@@ -1,30 +1,11 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-
-interface Theme {
-  background: string;
-  text: string;
-}
-
-interface Themes {
-  admin: Theme;
-  user: Theme;
-}
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { Theme, Themes, UserType, themes } from './theme';
+import useUser, { useUserType } from 'hooks/useUser';
 
 interface ThemeContextType {
   theme: Theme;
-  setTheme: (type: keyof Themes) => void;
+  setTheme: (type: UserType) => void;
 }
-
-const themes: Themes = {
-  admin: {
-    background: 'bg-red-500',
-    text: 'text-red-500',
-  },
-  user: {
-    background: 'bg-blue-500',
-    text: 'text-blue-500',
-  },
-};
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
@@ -41,7 +22,15 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState<keyof Themes>('user');
+  const userType = useUserType() as UserType;
+  const [theme, setTheme] = useState<UserType>(userType || 'moderator');
+  console.log("Current theme is : ", theme, "but usertype is : ", userType);
+
+  useEffect(() => {
+    if (userType) {
+      setTheme(userType);
+    }
+  }, [userType]);
 
   const value: ThemeContextType = {
     theme: themes[theme],

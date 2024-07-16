@@ -8,6 +8,7 @@ import TreatmentPlanPage from 'pages/treatmentplan-page';
 import TimePlansPage from 'pages/timeplans-page';
 import SettingsPage from 'pages/settings-page';
 import OnboardingPage from 'pages/onboarding-page';
+import SkillsPage from 'pages/skills-page';
 
 function App() {
   return (
@@ -40,6 +41,10 @@ function App() {
         <Route
           path="/timeplans"
           element={withLayout(TimePlansPage)()}
+        />
+        <Route
+          path="/skills"
+          element={withLayout(SkillsPage)()}
         />
         <Route
           path="/settings"

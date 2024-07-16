@@ -5,7 +5,7 @@ const Freshers = require("assets/freshers.jpg");
 
 function Home() {
   return (
-    <div className='relative w-full h-full flex justify-center items-center'>
+    <div className='relative w-full h-screen flex justify-center items-center'>
       {/* SVG on the top left */}
       <svg className='absolute overflow-hidden top-25 left-10 z-10 w-64 h-64 blur-3xl' viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
         <path fill="#0F62FE" d="M65.2,-21.8C73.4,4.2,61.4,36.1,37.5,54C13.6,71.9,-22.1,75.8,-42.6,60.5C-63,45.2,-68,10.8,-58.4,-17.2C-48.7,-45.2,-24.4,-66.6,2.1,-67.3C28.5,-68,56.9,-47.8,65.2,-21.8Z" transform="translate(100 100)" />

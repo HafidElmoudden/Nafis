@@ -27,21 +27,19 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
 export function SignInAuthForm({ className, currentTabHandler, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm({mode: "onChange"});
+  const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onChange" });
   const { toast } = useToast();
 
   console.log("Erorrs: ", errors)
 
   async function onSubmit(_data: FieldValues) {
-    console.log("hello : ",_data);
+    console.log("hello : ", _data);
     const { data, error } = await signInUser(_data.email, _data.password);
     const { data: moderatorSchoolVerification } = await verifyModeratorIsSchoolCoordinator(data.session?.user.id)
     console.log("moderatorSchoolVerification: ", moderatorSchoolVerification)
     if (!error) {
-      console.log("meow1: ", moderatorSchoolVerification)
-      console.log("meow2", data.session?.user.user_metadata.user_type)
-      console.log("meow3", data)
-      if (!data.session?.user.user_metadata.user_type || (moderatorSchoolVerification as any[])?.length == 0) {
+      console.log("type", data.session?.user.user_metadata.user_type)
+      if ((!data.session?.user.user_metadata.user_type || (moderatorSchoolVerification as any[])?.length == 0) && data.session?.user.user_metadata.user_type !== "admin") {
         navigate("/onboarding");
       } else {
         navigate("/home");
@@ -77,7 +75,7 @@ export function SignInAuthForm({ className, currentTabHandler, ...props }: UserA
             // autoComplete="email"
             // autoCorrect="off"
             register={register("email", { required: ".المرجو ملئ الحقل بالشكل الصحيح" })}
-            />
+          />
         </div>
         <div className="flex flex-col gap-[6px]">
           <Label htmlFor="password" className="text-sm text-[#344054] font-medium">
@@ -94,7 +92,7 @@ export function SignInAuthForm({ className, currentTabHandler, ...props }: UserA
             // autoCorrect="off"
             // className={errors.email ? "border-red-500" : ""}
             register={register("password", { required: ".المرجو ملئ الحقل بالشكل الصحيح" })}
-             />
+          />
         </div>
         <div className="flex justify-between items-center">
           <div className="flex gap-2 items-center justify-center">
