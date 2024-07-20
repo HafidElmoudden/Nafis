@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Skill } from "../../data/skills-page/skillsSchema";
+import { Skill } from "../../data/skills-page/skillSchema";
 import { DataTableColumnHeader } from "../../data-table-column-header";
 import TrashIcon from "assets/icons/trash-icon.svg";
 // @ts-ignore

@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { ChevronDown, HelpCircleIcon } from "lucide-react";
 
-interface DropdownItem {
+export interface DropdownItem {
     id: string | number;
     name: string;
 }
@@ -35,6 +35,7 @@ interface DropdownProps extends PopoverProps {
     className?: string;
     tooltipMessage?: string;
     isError?: boolean;
+    value?: DropdownItem | undefined;
 }
 
 export function Dropdown({
@@ -45,10 +46,11 @@ export function Dropdown({
     className,
     tooltipMessage,
     isError,
+    value,
     ...props
 }: DropdownProps) {
     const [open, setOpen] = React.useState(false);
-    const [selectedItem, setSelectedItem] = React.useState<DropdownItem>();
+    const [selectedItem, setSelectedItem] = React.useState<DropdownItem | undefined>(value || undefined);
 
     const handleSelect = (item: DropdownItem) => {
         setSelectedItem(item);

@@ -8,9 +8,12 @@ import React from "react";
 import { cn } from "utils";
 import SkillsPlaceholder from "components/table/data/skills-page/skills-data-placeholder";
 import { columns } from "components/table/tables-columns/skills-page/skills-table-columns";
+import { useNavigate } from "react-router-dom";
 
 function SkillsPage() {
     const { theme } = useTheme();
+    const navigate = useNavigate();
+
     return (
         <div className="w-full min-h-screen flex flex-col p-8 gap-8 ">
             <header className="flex flex-col gap-[10px] w-full">
@@ -31,7 +34,7 @@ function SkillsPage() {
                     <Button
                         variant="default"
                         className={cn(theme.skillsPage.createSkillButtonBg, theme.skillsPage.createSkillButtonBgHover)}
-                        // onClick={openDialog}
+                        onClick={() => navigate("/add-skill")}
                     >
                         اضافة مهارة
                     </Button>

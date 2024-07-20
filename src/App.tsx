@@ -9,6 +9,7 @@ import TimePlansPage from 'pages/timeplans-page';
 import SettingsPage from 'pages/settings-page';
 import OnboardingPage from 'pages/onboarding-page';
 import SkillsPage from 'pages/skills-page';
+import AddSkillPage from 'pages/add-skill-page';
 
 function App() {
   return (
@@ -45,6 +46,10 @@ function App() {
         <Route
           path="/skills"
           element={withLayout(SkillsPage)()}
+        />
+        <Route
+          path="/add-skill"
+          element={withLayout(AddSkillPage)()}
         />
         <Route
           path="/settings"
