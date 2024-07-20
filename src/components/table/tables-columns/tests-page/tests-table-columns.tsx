@@ -6,7 +6,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Test } from "../../data/tests-page/testSchema";
 import { DataTableColumnHeader } from "../../data-table-column-header";
 import { getRandomBadgeColor } from "utils";
-import TrashIcon from "assets/icons/trash-icon.svg";
+// @ts-ignore
+import { ReactComponent as TrashIcon } from "assets/icons/trash-icon.svg";
 // @ts-ignore
 import { ReactComponent as FlipBackwardIcon } from "assets/icons/flip-backward-icon.svg";
 import PieCharticon from "assets/icons/pie-chart-icon.svg";
@@ -179,7 +180,6 @@ export const columns: ColumnDef<Test>[] = [
             <div className="flex items-center justify-center gap-4 min-w-28">
                 <Tooltip delayDuration={300}>
                     <TooltipTrigger>
-                        {/* <img src={FlipBackwardIcon} alt="duplicate" className="cursor-pointer" /> */}
                         {row.getValue("type") === "قبلي" ? (
                             <FlipBackwardIcon
                                 color="#475467"
@@ -210,9 +210,8 @@ export const columns: ColumnDef<Test>[] = [
                 </Tooltip>
                 <Tooltip delayDuration={300}>
                     <TooltipTrigger>
-                        <img
-                            src={TrashIcon}
-                            alt="delete"
+                        <TrashIcon
+                            color="#475467"
                             className="cursor-pointer"
                         />
                     </TooltipTrigger>
